@@ -71,7 +71,7 @@ jQuery(document).ready(function() {
     			// show next step
 	    		$(this).next().fadeIn();
 	    		// scroll window to beginning of the form
-    			scroll_to_class( $('.f1'), 20 );
+    			//scroll_to_class( $('.f1'), 20 );
 	    	});
     	}
 
