@@ -16,4 +16,16 @@ $(function() {
         resize: true
     });
 
+    Morris.Donut({
+        element: 'morris-donut-chart',
+        data: [{
+            label: "Paid Visits",
+            value: 2070
+        }, {
+            label: "Guest Visits",
+            value: 52
+        }],
+        resize: true
+    });
+
 });
