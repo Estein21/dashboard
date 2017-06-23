@@ -1,129 +1,480 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{% include 'head.html' %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Yogilytics Dashboard</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../static/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../static/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="../static/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- DataTables CSS -->
+    <link href="../static/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="../static/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
 
 <body>
 
-    {% include 'header.html' %}
+    <div id="wrapper">
 
-    <!-- Top content -->
-    <div class="top-content">
-        <div class="container">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Yogilytics Dashboard</a>
+            </div>
+            <!-- /.navbar-header -->
 
+            <ul class="nav navbar-top-links navbar-right">
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-upload fa-fw"></i> Upload CSV</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-filter fa-fw"></i> Yogi Funnel</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-users fa-fw"></i> Run Promotions</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-twitter fa-fw"></i> Social Media</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
             <div class="row">
-                <div class="col-sm-8 col-sm-offset-2 text">
-                    <h1>Yogi<strong style="color:#f35b3f">lytics</strong></h1>
-                    <div class="description">
-                        <p>Get insight into your Yoga studio's performance and keep your top Yogis coming back!</p>
+              <div style="margin-top: 10px;margin-bottom:0px" class="alert alert-danger alert-dismissable">
+                                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                  The <strong>Bloomingdale Studio</strong> lost 15% of recurring Yogis <a href="#" class="alert-link">Take Action!</a>.
+              </div>
+
+                <div class="col-lg-12">
+                    <h1 class="page-header">Yogilytics for May 2017</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-users fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">26,120</div>
+                                    <div>Total Paid Visits!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-book fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">Andrea</div>
+                                    <div>Top Teacher!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-building-o fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">H St</div>
+                                    <div>Top Studio!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-usd fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">$130,000</div>
+                                    <div>Revenue!</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
+            <!-- /.row -->
             <div class="row">
-                <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-box">
-                    <form role="form" action="/submit" method="post" class="f1">
-
-                        <h3>Get Started</h3>
-                        <p>Follow the instructions below</p>
-                        <div class="f1-steps">
-                            <div class="f1-progress">
-                                <div class="f1-progress-line" data-now-value="16.66" data-number-of-steps="5" style="width: 16.66%;"></div>
-                            </div>
-                            <div class="f1-step active">
-                                <div class="f1-step-icon"><i class="fa fa-upload"></i></div>
-                                <p>upload</p>
-                            </div>
-                            <div class="f1-step">
-                                <div class="f1-step-icon"><i class="fa fa-hand-pointer-o"></i></div>
-                                <p>specify</p>
-                            </div>
-                            <div class="f1-step">
-                                <div class="f1-step-icon"><i class="fa fa-line-chart"></i></div>
-                                <p>analyze</p>
-                            </div>
-                            <div class="f1-step">
-                                <div class="f1-step-icon"><i class="fa fa-pencil"></i></div>
-                                <p>draft</p>
-                            </div>
-                            <div class="f1-step">
-                                <div class="f1-step-icon"><i class="fa fa-envelope"></i></div>
-                                <p>send</p>
+                <div class="col-lg-12">
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Top 5 Instructors at 14th St Studio in May 2017
+                            <div class="pull-right" style="margin-top: -6px;">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline btn-default dropdown-toggle" data-toggle="dropdown">
+                                        Studio
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a href="#">14th Street</a>
+                                        </li>
+                                        <li><a href="#">Bloomingdale</a>
+                                        </li>
+                                        <li><a href="#">Coheights</a>
+                                        </li>
+                                        <li><a href="#">Dupont</a>
+                                        </li>
+                                        <li><a href="#">Eye St</a>
+                                        </li>
+                                        <li><a href="#">Glober</a>
+                                        </li>
+                                        <li><a href="#">H St</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-
-                        <fieldset>
-                            <h4>Upload your Yoga studio's exported historical customer CSV:</h4>
-
-                            <div style="position:relative;">
-                                <a class='btn btn-primary' href='javascript:;'>
-                          			Choose File...
-                          			<input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40"  onchange='$("#upload-file-info").html($(this).val());'>
-                          		</a> &nbsp;
-                                <span class='label label-info' id="upload-file-info"></span>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="morris-bar-chart"></div>
+                                </div>
+                                <!-- /.col-lg-8 (nested) -->
                             </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
 
-                            <div class="f1-buttons">
-                                <button type="button" class="btn btn-next">Next</button>
-                            </div>
-                        </fieldset>
+                    <!-- /.panel -->
 
-                        <fieldset>
-                            <h4>Select which fields are relevant for analytics. <br><br> Define columns for customer's names, studios and email based on your upload.</h4>
-                            <!-- <div class="form-group">
-                                <label class="sr-only" for="f1-email">Email</label>
-                                <input type="text" name="f1-email" placeholder="Email..." class="f1-email form-control" id="f1-email">
-                            </div> -->
-                            <div class="f1-buttons">
-                                <button type="button" class="btn btn-previous">Previous</button>
-                                <button type="button" class="btn btn-next">Next</button>
-                            </div>
-                        </fieldset>
-
-                        <fieldset>
-                            <h4>Sort by customers whose last visit is greater than one month ago. <br><br>Select each customer to include in the segment.</h4>
-                            <!-- <div class="form-group">
-                                <label class="sr-only" for="f1-facebook">Facebook</label>
-                                <input type="text" name="f1-facebook" placeholder="Facebook..." class="f1-facebook form-control" id="f1-facebook">
-                            </div> -->
-                            <div class="f1-buttons">
-                                <button type="button" class="btn btn-previous">Previous</button>
-                                <button type="button" class="btn btn-next">Next</button>
-                            </div>
-                        </fieldset>
-
-                        <fieldset>
-                            <h4>Write up personal "special offer" emails. <br><br> Email editor to include variables such as customer's name, studio, etc.</h4>
-                            <!-- <div class="form-group">
-                                <label class="sr-only" for="f1-facebook">Facebook</label>
-                                <input type="text" name="f1-facebook" placeholder="Facebook..." class="f1-facebook form-control" id="f1-facebook">
-                            </div> -->
-                            <div class="f1-buttons">
-                                <button type="button" class="btn btn-previous">Previous</button>
-                                <button type="button" class="btn btn-next">Next</button>
-                            </div>
-                        </fieldset>
-
-                        <fieldset>
-                            <h4>Send personalized emails and track open rate & responses. <br><br> Select frequency of emails to be sent across all selected customers with a single button. </h4>
-                            <!-- <div class="form-group">
-                                <label class="sr-only" for="f1-facebook">Facebook</label>
-                                <input type="text" name="f1-facebook" placeholder="Facebook..." class="f1-facebook form-control" id="f1-facebook">
-                            </div> -->
-                            <div class="f1-buttons">
-                                <button type="button" class="btn btn-previous">Previous</button>
-                                <button type="submit" class="btn btn-next">Send</button>
-                            </div>
-                        </fieldset>
-
-                    </form>
+                    <!-- /.panel -->
                 </div>
             </div>
 
-        </div>
-    </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <i class="fa fa-clock-o fa-fw"></i> Instructor Performance by Studio
+                  </div>
+                  <div class="panel-body">
 
-    {% include 'footer.html' %}
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#home" data-toggle="tab">14th St</a>
+                        </li>
+                        <li><a href="#dupont" data-toggle="tab">Dupont</a>
+                        </li>
+                        <li><a href="#messages" data-toggle="tab">Glober</a>
+                        </li>
+                        <li><a href="#settings" data-toggle="tab">H St</a>
+                        </li>
+                        <li><a href="#settings" data-toggle="tab">Eye St</a>
+                        </li>
+                        <li><a href="#settings" data-toggle="tab">Coheights</a>
+                        </li>
+                        <li><a href="#settings" data-toggle="tab">Bloomingdale</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="home">
+                            <h4 style="padding-bottom:1em"></h4>
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Teacher</th>
+                                        <th>Paid Visits</th>
+                                        <th>Platform(s)</th>
+                                        <th>Total Sessions</th>
+                                        <th>Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="odd gradeX">
+                                        <td>Trident</td>
+                                        <td>Internet Explorer 4.0</td>
+                                        <td>Win 95+</td>
+                                        <td class="center">4</td>
+                                        <td class="center">X</td>
+                                    </tr>
+                                    <tr class="even gradeC">
+                                        <td>Trident</td>
+                                        <td>Internet Explorer 5.0</td>
+                                        <td>Win 95+</td>
+                                        <td class="center">5</td>
+                                        <td class="center">C</td>
+                                    </tr>
+                                    <tr class="odd gradeA">
+                                        <td>Trident</td>
+                                        <td>Internet Explorer 5.5</td>
+                                        <td>Win 95+</td>
+                                        <td class="center">5.5</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="even gradeA">
+                                        <td>Trident</td>
+                                        <td>Internet Explorer 6</td>
+                                        <td>Win 98+</td>
+                                        <td class="center">6</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="odd gradeA">
+                                        <td>Trident</td>
+                                        <td>Internet Explorer 7</td>
+                                        <td>Win XP SP2+</td>
+                                        <td class="center">7</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="even gradeA">
+                                        <td>Trident</td>
+                                        <td>AOL browser (AOL desktop)</td>
+                                        <td>Win XP</td>
+                                        <td class="center">6</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Firefox 1.0</td>
+                                        <td>Win 98+ / OSX.2+</td>
+                                        <td class="center">1.7</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Firefox 1.5</td>
+                                        <td>Win 98+ / OSX.2+</td>
+                                        <td class="center">1.8</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Firefox 2.0</td>
+                                        <td>Win 98+ / OSX.2+</td>
+                                        <td class="center">1.8</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Firefox 3.0</td>
+                                        <td>Win 2k+ / OSX.3+</td>
+                                        <td class="center">1.9</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Camino 1.0</td>
+                                        <td>OSX.2+</td>
+                                        <td class="center">1.8</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Camino 1.5</td>
+                                        <td>OSX.3+</td>
+                                        <td class="center">1.8</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Netscape 7.2</td>
+                                        <td>Win 95+ / Mac OS 8.6-9.2</td>
+                                        <td class="center">1.7</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Netscape Browser 8</td>
+                                        <td>Win 98SE+</td>
+                                        <td class="center">1.7</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Netscape Navigator 9</td>
+                                        <td>Win 98+ / OSX.2+</td>
+                                        <td class="center">1.8</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Mozilla 1.0</td>
+                                        <td>Win 95+ / OSX.1+</td>
+                                        <td class="center">1</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Mozilla 1.1</td>
+                                        <td>Win 95+ / OSX.1+</td>
+                                        <td class="center">1.1</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                    <tr class="gradeA">
+                                        <td>Gecko</td>
+                                        <td>Mozilla 1.2</td>
+                                        <td>Win 95+ / OSX.1+</td>
+                                        <td class="center">1.2</td>
+                                        <td class="center">A</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                          </div>
+                        <div class="tab-pane fade" id="dupont">
+                          <h4>None yet!</h4>
+                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+                    </div>
+                      <!-- /.table-responsive -->
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../static/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="../static/raphael/raphael.min.js"></script>
+    <script src="../static/morrisjs/morris.min.js"></script>
+    <script src="../static/data/morris-data.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../static/js/sb-admin-2.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="../static/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../static/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="../static/datatables-responsive/dataTables.responsive.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+    </script>
+
+
+    <style>
+    table {
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+        width: 100%;
+    }
+    table thead {
+        /* head takes the height it requires,
+        and it's not scaled when table is resized */
+        flex: 0 0 auto;
+        /*width: calc(100% - 0.9em);*/
+        width:100%;
+    }
+    table tbody {
+        /* body takes all the remaining available space */
+        flex: 1 1 auto;
+        display: block;
+        overflow-y: scroll;
+    }
+    table tbody tr {
+        width: 100%;
+    }
+    table thead, table tbody tr {
+        display: table;
+        table-layout: fixed;
+    }
+    </style>
 
 </body>
 

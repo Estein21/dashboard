@@ -17,9 +17,5 @@ def home():
 def submit():
     return redirect("/", code=302)
 
-@app.route('/pi')
-def pi():
-    return render_template('pi.html')
-
 if __name__ == '__main__':
     app.run(debug=True)
