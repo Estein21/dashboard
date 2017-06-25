@@ -4,7 +4,7 @@ from collections import Counter
 from jinja2 import Template
 # from util import Util
 # from bson.son import SON
-#from pymongo import MongoClient, GEO2D
+from pymongo import MongoClient, GEO2D
 
 
 
@@ -13,7 +13,7 @@ app = Flask(__name__)
 # u = Util()
 # db = u.dbConfig()
 app.secret_key = 'akshdjasdGHJsslkgajh'
-#db = MongoClient('52.15.58.213', 27017).test
+db = MongoClient('52.15.58.213', 27017).test
 
 @app.route('/')
 def dashboardRouting():
