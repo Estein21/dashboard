@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+{% include 'head.html' %}
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<style>
+    body {
+        background: url("../static/img/bg.png") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    #error {
+        font-size: 13px;
+        color: red;
+    }
 
-    <!-- Bootstrap Core CSS -->
-    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    #error-forgot {
+        font-size: 13px;
+        color: red;
+    }
 
-    <!-- MetisMenu CSS -->
-    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    .hidden {
+        display: none;
+    }
 
-    <!-- Custom CSS -->
-    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    .unhidden {
+        display: unset !important;
+    }
 
-    <!-- Custom Fonts -->
-    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    .disabled-button {
+        cursor: not-allowed;
+        opacity: .65;
+    }
+</style>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
 
 <body>
 
@@ -42,41 +47,99 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        <form id="login" action="/login" method="POST" role="form">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                 </div>
-                                <div class="checkbox">
+                                <!-- <div class="checkbox">
                                     <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                        <a href="#" style="font-size:12px; text-decoration: none" id="forgot-password">Forgot your password?</a>
                                     </label>
-                                </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a>
+                                </div> -->
+                                <p id="error"></p>
+                                <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block">
                             </fieldset>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="forgot-password-row" class="hidden">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4" style="margin-top:-6em">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Enter Email</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form class="" id="forgot" action="/forgot-password" method="POST" role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Email" name="email" type="email" autofocus>
+                                    </div>
+                                    <p id="error-forgot"></p>
+                                    <input type="submit" value="Reset Password" class="btn btn-primary btn-large btn-block">
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
+    {% include 'foot.html' %}
 
 </body>
 
 </html>
+
+<script>
+    $("form#login").submit(function(e) {
+        var form = this;
+        e.preventDefault();
+        var formData = $(form).serializeArray();
+        $.ajax({
+            url: "/login",
+            data: formData,
+            type: 'POST',
+            success: function(response) {
+                if (response == 'username') {
+                    $('#error').text("Username & password combination invalid!")
+                } else if (response == 'password') {
+                    $('#error').text("Username & password combination invalid!")
+                } else {
+                    form.submit();
+                }
+            }
+        });
+    });
+
+
+    $("form#forgot").submit(function(e) {
+        var form = this;
+        e.preventDefault();
+        var formData = $(form).serializeArray();
+        $.ajax({
+            url: "/forgot-password",
+            data: formData,
+            type: 'POST',
+            success: function(response) {
+                if (response == 'error') {
+                    $('#error-forgot').text("Email does not exist!");
+                } else {
+                    $("#reset-button").addClass('disabled-button').prop("disabled", true);
+                    form.submit();
+                }
+            }
+        });
+    });
+
+    $("#forgot-password").click(function() {
+        $('#forgot-password-row').toggleClass('unhidden')
+    });
+</script>
