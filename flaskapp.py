@@ -5,7 +5,7 @@ from collections import Counter
 from jinja2 import Template
 from util import Util
 from bson.son import SON
- 
+
 
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ def dashboardRouting():
         return home()
 
 def home():
-    query = db.test1.find({})
+    query = db.data.find({})
 
     # queryTwo = db.test1.find({})
     # uniqueStudios = db.test1.find({}).distinct("studio")
