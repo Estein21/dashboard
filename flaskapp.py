@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify, redirect, make_response, session, url_for
-from pymongo import MongoClient, GEO2D
 from werkzeug.utils import secure_filename
 from collections import Counter
 from jinja2 import Template
