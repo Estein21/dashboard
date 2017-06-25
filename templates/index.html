@@ -222,7 +222,6 @@
     <!-- Morris Charts JavaScript -->
     <script src="../static/raphael/raphael.min.js"></script>
     <script src="../static/morrisjs/morris.min.js"></script>
-    <script src="../static/data/morris-data.js"></script>
 
     <script>
     $(document).ready(function() {
@@ -230,6 +229,55 @@
             responsive: true
         });
     });
+
+    $(function() {
+
+        Morris.Bar({
+            element: 'morris-bar-chart',
+            data: [
+              {y:'AndreaD.',a:322,b:341},
+              {y:'Ellie',a:185,b:193},
+              {y:'Rexx',a:128,b:133},
+              {y:'Heather',a:110,b:111},
+              {y:'Cayla',a:107,b:107}
+            ],
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['Total Paid Visits', 'Total Visits'],
+            hideHover: 'auto',
+            resize: true
+        });
+
+        Morris.Donut({
+            element: 'morris-donut-chart',
+            data: [{
+                label: "Bloomingdale",
+                value: 42
+            },
+            {
+                label: "Eye",
+                value: 223
+            },
+            {
+                label: "Coheights",
+                value: 123
+            },
+            {
+                label: "Dupont",
+                value: 270
+            },
+            {
+                label: "Glober",
+                value: 125
+            },  {
+                label: "H",
+                value: 52
+            }],
+            resize: true
+        });
+
+    });
+
     </script>
 
 

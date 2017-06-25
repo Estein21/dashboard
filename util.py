@@ -16,5 +16,5 @@ class Util:
     def __init__(self):
         pass
     def dbConfig(self):
-        db = MongoClient('13.58.90.190', 27017).test
+        db = MongoClient('52.15.58.213', 27017).test
         return db
