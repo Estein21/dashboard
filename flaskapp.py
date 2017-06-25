@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 from collections import Counter
 from jinja2 import Template
 # from util import Util
-from bson.son import SON
+# from bson.son import SON
 from pymongo import MongoClient, GEO2D
 
 
