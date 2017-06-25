@@ -26,6 +26,7 @@ def dashboardRouting():
     elif session['logged_in'] == True:
         return home()
 
+@app.route('/home')
 def home():
     query = db.data.find({})
 
@@ -62,7 +63,7 @@ def do_admin_login():
         if form_username == db_username and form_password == db_password:
             session['logged_in'] = True
             session['studio'] = credential['studio']
-            return home()
+            return redirect("/", code=302)
         else:
             return 'password'
     else:
