@@ -35,7 +35,7 @@ def home():
     uniqueStudios = db.data.find({}).distinct("Studio")
 
     # for u in uniqueStudios:
-    # 
+    #
     # data = db.data.aggregate([
     #     {"$match": {'studio': "14th"}},
     #     {"$group": {
