@@ -5,9 +5,8 @@ from werkzeug.utils import secure_filename
 from collections import Counter
 from jinja2 import Template
 # from util import Util
-# from bson.son import SON
+from bson.son import SON
 from pymongo import MongoClient, GEO2D
-
 
 
 app = Flask(__name__)
@@ -16,6 +15,7 @@ app = Flask(__name__)
 # db = u.dbConfig()
 app.secret_key = 'akshdjasdGHJsslkgajh'
 db = MongoClient('52.15.58.213', 27017).test
+
 
 @app.route('/')
 def dashboardRouting():
@@ -26,27 +26,30 @@ def dashboardRouting():
     elif session['logged_in'] == True:
         return home()
 
+
 @app.route('/home')
 def home():
     query = db.data.find({})
 
     # queryTwo = db.test1.find({})
-    # uniqueStudios = db.test1.find({}).distinct("studio")
+    uniqueStudios = db.data.find({}).distinct("Studio")
+
+    # for u in uniqueStudios:
+    # 
+    # data = db.data.aggregate([
+    #     {"$match": {'studio': "14th"}},
+    #     {"$group": {
+    #         "_id": "studio", "total": {
+    #                          "$sum": "UniqueClients"
+    #         }
+    #     }
+    #     }
+    # ])
     #
-    # pipeline = [{"$group": {"_id": "$studio", "count": {"$sum": 1}}},{"$sort": SON([("count", -1), ("_id", -1)])}]
-    # pprint.pprint(list(db.test1.aggregate(pipeline)))
+    # for d in data:
+    #     print d
 
-    # q = db.test1.aggregate([
-    #                  { "$match": { 'studio': "14th" } },
-    #                  { "$group": { 'total': { '$sum': "$amount" } } },
-    #                  { "$sort": { 'total': -1 } }
-    #                ])
-    #
-    # print q
-
-    return render_template('index.html', query = query)
-
-
+    return render_template('index.html', query=query)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -54,7 +57,7 @@ def do_admin_login():
     form_username = str(request.form['username']).lower()
     form_password = str(request.form['password'])
 
-    credential = db.profiles.find_one({'username':form_username})
+    credential = db.profiles.find_one({'username': form_username})
     if credential != None:
 
         db_username = str(credential['username']).lower()
@@ -68,6 +71,7 @@ def do_admin_login():
             return 'password'
     else:
         return 'username'
+
 
 @app.route("/logout")
 def logout():
