@@ -205,22 +205,26 @@ table thead, table tbody tr {
                                 <thead>
                                     <tr>
                                         <th>Teacher</th>
-                                        <th>Paid Visits</th>
-                                        <th>Total Sessions</th>
-                                        <th>Unique Clients</th>
+                                        <th>Sessions</th>
+                                        <th>Comp'd</th>
+                                        <th>Paid</th>
+                                        <th>Unique</th>
+                                        <th>Average</th>
                                         <th>Studio</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  {% for q in query %}
+                                    {% for q in query %}
                                     <tr class="odd gradeX">
                                         <td>{{q.Teacher}}</td>
-                                        <td>{{q.PaidVisits}}</td>
                                         <td>{{q.TotalSessions}}</td>
+                                        <td>{{q.CompGuestVisits}}</td>
+                                        <td class="center">{{q.PaidVisits}}</td>
                                         <td class="center">{{q.UniqueClients}}</td>
+                                        <td class="center">{{q.Average}}</td>
                                         <td class="center">{{q.Studio}}</td>
                                     </tr>
-                                  {% endfor %}
+                                    {% endfor %}
                                 </tbody>
                             </table>
                           </div>
