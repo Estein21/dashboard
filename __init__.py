@@ -31,30 +31,17 @@ def dashboardRouting():
 def home():
     query = db.data.find({})
 
+    # total sessions sum
     queryTwo = db.data.find()
     totalSessions = 0
     for q in queryTwo:
         totalSessions += int(q['TotalSessions'])
 
+
     # queryTwo = db.test1.find({})
     uniqueStudios = db.data.find({}).distinct("Studio")
 
-    # for u in uniqueStudios:
-    #
-    # data = db.data.aggregate([
-    #     {"$match": {'studio': "14th"}},
-    #     {"$group": {
-    #         "_id": "studio", "total": {
-    #                          "$sum": "UniqueClients"
-    #         }
-    #     }
-    #     }
-    # ])
-    #
-    # for d in data:
-    #     print d
-
-    return render_template('index.html', query=query, totalSessions=totalSessions)
+    return render_template('index.html', query=query, totalSessions=totalSessions, uniqueStudios=uniqueStudios)
 
 
 @app.route('/login', methods=['POST', 'GET'])

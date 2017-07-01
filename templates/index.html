@@ -1,4 +1,6 @@
 {% include 'head.html' %}
+{% include 'foot.html' %}
+
 
 <style>
 table {
@@ -27,7 +29,21 @@ table thead, table tbody tr {
     display: table;
     table-layout: fixed;
 }
+
+.preload {
+  width:100px;
+  height: 100px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index:99999;
+}
+
 </style>
+
+<div class="preload">
+  <img src="http://i.imgur.com/KUJoe.gif">
+</div>
 
 <body>
 
@@ -146,7 +162,7 @@ table thead, table tbody tr {
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <div id="morris-bar-chart"></div>
+                                    <div id="instructor-bar-chart"></div>
                                 </div>
                                 <!-- /.col-lg-8 (nested) -->
                             </div>
@@ -181,28 +197,19 @@ table thead, table tbody tr {
 
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home" data-toggle="tab">14th St</a>
-                        </li>
-                        <li><a href="#dupont" data-toggle="tab">Dupont</a>
-                        </li>
-                        <li><a href="#messages" data-toggle="tab">Glober</a>
-                        </li>
-                        <li><a href="#settings" data-toggle="tab">H St</a>
-                        </li>
-                        <li><a href="#settings" data-toggle="tab">Eye St</a>
-                        </li>
-                        <li><a href="#settings" data-toggle="tab">Coheights</a>
-                        </li>
-                        <li><a href="#settings" data-toggle="tab">Bloomingdale</a>
-                        </li>
+                      {% for s in uniqueStudios | sort(reverse = True) %}
+                      <li class="studio-tabs-table"><a href="#{{s}}" data-toggle="tab">{{s}}</a></li>
+                      {% endfor %}
                     </ul>
 
                     <!-- Tab panes -->
                     <div class="tab-content">
-                        <div class="tab-pane fade in active" id="home">
+
+                      {% for s in uniqueStudios  | sort(reverse = True) %}
+                        <div class="tab-pane fade in" id="{{s}}">
                             <h4 style="padding-bottom:1em"></h4>
                             <!-- <div id="colvis"></div> -->
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table width="100%" class="datatable-teacher table table-striped table-bordered table-hover" id="dataTables-example-{{s}}">
                                 <thead>
                                     <tr>
                                         <th>Teacher</th>
@@ -216,23 +223,26 @@ table thead, table tbody tr {
                                 </thead>
                                 <tbody>
                                     {% for q in query %}
-                                    <tr class="odd gradeX">
-                                        <td>{{q.Teacher}}</td>
-                                        <td>{{q.TotalSessions}}</td>
-                                        <td>{{q.CompGuestVisits}}</td>
-                                        <td class="center">{{q.PaidVisits}}</td>
-                                        <td class="center">{{q.UniqueClients}}</td>
-                                        <td class="center">{{q.Average}}</td>
-                                        <td class="center">{{q.Studio}}</td>
-                                    </tr>
+                                      <tr class="odd gradeX">
+                                          <td>{{q.Teacher}}</td>
+                                          <td>{{q.TotalSessions}}</td>
+                                          <td>{{q.CompGuestVisits}}</td>
+                                          <td class="center">{{q.PaidVisits}}</td>
+                                          <td class="center">{{q.UniqueClients}}</td>
+                                          <td class="center">{{q.Average}}</td>
+                                          <td class="center">{{q.Studio}}</td>
+                                      </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
                           </div>
-                        <div class="tab-pane fade" id="dupont">
-                          <h4>None yet!</h4>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        </div>
+                          <script>
+                          $('#dataTables-example-{{s}}').DataTable({
+                              responsive: true
+                          });
+
+                          </script>
+                        {% endfor %}
                     </div>
                       <!-- /.table-responsive -->
                   </div>
@@ -245,7 +255,6 @@ table thead, table tbody tr {
     </div>
     <!-- /#wrapper -->
 
-    {% include 'foot.html' %}
 
     <link href="../static/morrisjs/morris.css" rel="stylesheet">
     <link href="../static/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
@@ -257,50 +266,24 @@ table thead, table tbody tr {
     <script src="../static/raphael/raphael.min.js"></script>
     <script src="../static/morrisjs/morris.min.js"></script>
 
+    <!-- HighCharts -->
+    <script src="../static/js/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+
     <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
-        var table = $('#dataTables-example').DataTable();
-
-        $("#dataTables-example thead th").each( function ( i ) {
-      		var name = table.column( i ).header();
-      		var spanelt = document.createElement( "button" );
-      		spanelt.innerHTML = name.innerHTML;
-
-      		$(spanelt).addClass("colvistoggle");
-      		$(spanelt).attr("colidx",i);		// store the column idx on the button
-
-      		$(spanelt).on( 'click', function (e) {
-      			e.preventDefault();
-      			// Get the column API object
-      			var column = table.column( $(this).attr('colidx') );
-      			 // Toggle the visibility
-      			column.visible( ! column.visible() );
-      		});
-      		$("#colvis").append($(spanelt));
-      	});
-
+    $('.studio-tabs-table').each(function(index, value) {
+      if (index == '1') {
+        $(this).addClass( "active" );
+      }
+    });
+    $('.tab-pane').each(function(index, value) {
+      if (index == '1') {
+        $(this).addClass( "active in");
+      }
     });
 
     $(function() {
-
-        Morris.Bar({
-            element: 'morris-bar-chart',
-            data: [
-              {y:'AndreaD.',a:322,b:341},
-              {y:'Ellie',a:185,b:193},
-              {y:'Rexx',a:128,b:133},
-              {y:'Heather',a:110,b:111},
-              {y:'Cayla',a:107,b:107}
-            ],
-            xkey: 'y',
-            ykeys: ['a', 'b'],
-            labels: ['Total Paid Visits', 'Total Visits'],
-            hideHover: 'auto',
-            resize: true
-        });
 
         Morris.Donut({
             element: 'morris-donut-chart',
@@ -331,6 +314,257 @@ table thead, table tbody tr {
         });
 
     });
+
+
+    // Create the chart
+    Highcharts.chart('instructor-bar-chart', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Top 5 Instructors in May 2017'
+        },
+        subtitle: {
+            text: 'Click the columns to view classes.'
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Number of Sessions'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> sessions<br/>'
+        },
+
+        series: [{
+            name: 'Instructors',
+            colorByPoint: true,
+            data: [{
+                name: 'Greg',
+                y: 96,
+                drilldown: 'Greg'
+            }, {
+                name: 'Rexx',
+                y: 83,
+                drilldown: 'Rexx'
+            }, {
+                name: 'Julie',
+                y: 64,
+                drilldown: 'Julie'
+            }, {
+                name: 'Joe',
+                y: 42,
+                drilldown: 'Joe'
+            }, {
+                name: 'Frank',
+                y: 12,
+                drilldown: 'Frank'
+            }]
+        }],
+        drilldown: {
+            series: [{
+                name: 'Greg',
+                id: 'Greg',
+                data: [
+                    [
+                        'Session 1',
+                        24.13
+                    ],
+                    [
+                        'Session 2',
+                        17.2
+                    ],
+                    [
+                        'v9.0',
+                        8.11
+                    ],
+                    [
+                        'v10.0',
+                        5.33
+                    ],
+                    [
+                        'v6.0',
+                        1.06
+                    ],
+                    [
+                        'v7.0',
+                        0.5
+                    ]
+                ]
+            }, {
+                name: 'Rexx',
+                id: 'Rexx',
+                data: [
+                    [
+                        'v40.0',
+                        5
+                    ],
+                    [
+                        'v41.0',
+                        4.32
+                    ],
+                    [
+                        'v42.0',
+                        3.68
+                    ],
+                    [
+                        'v39.0',
+                        2.96
+                    ],
+                    [
+                        'v36.0',
+                        2.53
+                    ],
+                    [
+                        'v43.0',
+                        1.45
+                    ],
+                    [
+                        'v31.0',
+                        1.24
+                    ],
+                    [
+                        'v35.0',
+                        0.85
+                    ],
+                    [
+                        'v38.0',
+                        0.6
+                    ],
+                    [
+                        'v32.0',
+                        0.55
+                    ],
+                    [
+                        'v37.0',
+                        0.38
+                    ],
+                    [
+                        'v33.0',
+                        0.19
+                    ],
+                    [
+                        'v34.0',
+                        0.14
+                    ],
+                    [
+                        'v30.0',
+                        0.14
+                    ]
+                ]
+            }, {
+                name: 'Julie',
+                id: 'Julie',
+                data: [
+                    [
+                        'v35',
+                        2.76
+                    ],
+                    [
+                        'v36',
+                        2.32
+                    ],
+                    [
+                        'v37',
+                        2.31
+                    ],
+                    [
+                        'v34',
+                        1.27
+                    ],
+                    [
+                        'v38',
+                        1.02
+                    ],
+                    [
+                        'v31',
+                        0.33
+                    ],
+                    [
+                        'v33',
+                        0.22
+                    ],
+                    [
+                        'v32',
+                        0.15
+                    ]
+                ]
+            }, {
+                name: 'Joe',
+                id: 'Joe',
+                data: [
+                    [
+                        'v8.0',
+                        2.56
+                    ],
+                    [
+                        'v7.1',
+                        0.77
+                    ],
+                    [
+                        'v5.1',
+                        0.42
+                    ],
+                    [
+                        'v5.0',
+                        0.3
+                    ],
+                    [
+                        'v6.1',
+                        0.29
+                    ],
+                    [
+                        'v7.0',
+                        0.26
+                    ],
+                    [
+                        'v6.2',
+                        0.17
+                    ]
+                ]
+            }, {
+                name: 'Frank',
+                id: 'Frank',
+                data: [
+                    [
+                        'v12.x',
+                        0.34
+                    ],
+                    [
+                        'v28',
+                        0.24
+                    ],
+                    [
+                        'v27',
+                        0.17
+                    ],
+                    [
+                        'v29',
+                        0.16
+                    ]
+                ]
+            }]
+        }
+    });
+
 
     </script>
 
