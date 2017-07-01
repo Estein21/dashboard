@@ -140,20 +140,11 @@ table thead, table tbody tr {
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">14th Street</a>
-                                        </li>
-                                        <li><a href="#">Bloomingdale</a>
-                                        </li>
-                                        <li><a href="#">Coheights</a>
-                                        </li>
-                                        <li><a href="#">Dupont</a>
-                                        </li>
-                                        <li><a href="#">Eye St</a>
-                                        </li>
-                                        <li><a href="#">Glober</a>
-                                        </li>
-                                        <li><a href="#">H St</a>
-                                        </li>
+                                          {% for s in uniqueStudios | sort() %}
+                                            <li>
+                                              <a href="#top-instructor-chart-{{s}}">{{s}}</a>
+                                            </li>
+                                          {% endfor %}
                                     </ul>
                                 </div>
                             </div>
@@ -197,7 +188,7 @@ table thead, table tbody tr {
 
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs">
-                      {% for s in uniqueStudios | sort(reverse = True) %}
+                      {% for s in uniqueStudios | sort() %}
                       <li class="studio-tabs-table"><a href="#{{s}}" data-toggle="tab">{{s}}</a></li>
                       {% endfor %}
                     </ul>
@@ -205,7 +196,7 @@ table thead, table tbody tr {
                     <!-- Tab panes -->
                     <div class="tab-content">
 
-                      {% for s in uniqueStudios  | sort(reverse = True) %}
+                      {% for s in uniqueStudios  | sort() %}
                         <div class="tab-pane fade in" id="{{s}}">
                             <h4 style="padding-bottom:1em"></h4>
                             <!-- <div id="colvis"></div> -->
@@ -273,12 +264,12 @@ table thead, table tbody tr {
 
     <script>
     $('.studio-tabs-table').each(function(index, value) {
-      if (index == '1') {
+      if (index == '0') {
         $(this).addClass( "active" );
       }
     });
     $('.tab-pane').each(function(index, value) {
-      if (index == '1') {
+      if (index == '0') {
         $(this).addClass( "active in");
       }
     });

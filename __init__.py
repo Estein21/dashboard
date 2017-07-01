@@ -37,9 +37,11 @@ def home():
     for q in queryTwo:
         totalSessions += int(q['TotalSessions'])
 
-
-    # queryTwo = db.test1.find({})
+    uniqueTeachers = db.data.find({}).distinct("Teacher")
     uniqueStudios = db.data.find({}).distinct("Studio")
+
+    #get the top 5 teachers in each unique studio
+
 
     return render_template('index.html', query=query, totalSessions=totalSessions, uniqueStudios=uniqueStudios)
 
