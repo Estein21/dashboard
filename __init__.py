@@ -31,6 +31,11 @@ def dashboardRouting():
 def home():
     query = db.data.find({})
 
+    queryTwo = db.data.find()
+    totalSessions = 0
+    for q in queryTwo:
+        totalSessions += int(q['TotalSessions'])
+
     # queryTwo = db.test1.find({})
     uniqueStudios = db.data.find({}).distinct("Studio")
 
@@ -49,7 +54,7 @@ def home():
     # for d in data:
     #     print d
 
-    return render_template('index.html', query=query)
+    return render_template('index.html', query=query, totalSessions=totalSessions)
 
 
 @app.route('/login', methods=['POST', 'GET'])
