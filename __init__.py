@@ -37,13 +37,42 @@ def home():
     for q in queryTwo:
         totalSessions += int(q['TotalSessions'])
 
+    totalPaidVisits = db.data.aggregate(
+        [{'$group': {'_id': None, 'total': {'$sum': '$PaidVisits'}}}]
+    )
+
+    teacherList = list(query)
+
+
     uniqueTeachers = db.data.find({}).distinct("Teacher")
     uniqueStudios = db.data.find({}).distinct("Studio")
 
-    #get the top 5 teachers in each unique studio
+    # s = db.data.aggregate([
+    #     { '$sort': { 'Teacher': 1, 'TotalSessions': -1 } },
+    #     {
+    #         '$group': {
+    #             '_id': '$Teacher',
+    #             'docs': { '$push': '$$ROOT' },
+    #         }
+    #     },
+    #     {
+    #         '$project': {
+    #             'top_three': {
+    #                 '$slice': ['$docs', 3]
+    #             }
+    #         }
+    #     }
+    # ])
+    #
+    # for i in s:
+    #     print i['PaidVisits']
 
 
-    return render_template('index.html', query=query, totalSessions=totalSessions, uniqueStudios=uniqueStudios)
+    #get the top 5 teachers in each studio
+
+
+    return render_template('index.html',
+    query=query, teacherList=teacherList, totalSessions=totalSessions, uniqueStudios=uniqueStudios, totalPaidVisits=totalPaidVisits)
 
 
 @app.route('/login', methods=['POST', 'GET'])

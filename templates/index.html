@@ -73,8 +73,8 @@ table thead, table tbody tr {
                                     <i class="fa fa-users fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">26,120</div>
-                                    <div>Total Paid Visits!</div>
+                                  <div class="huge">{{totalSessions}}</div>
+                                  <div>Total Sessions!</div>
                                 </div>
                             </div>
                         </div>
@@ -118,8 +118,9 @@ table thead, table tbody tr {
                                     <i class="fa fa-usd fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">{{totalSessions}}</div>
-                                    <div>Total Sessions!</div>
+                                  <div class="huge">{% for p in totalPaidVisits %}{{p.total}}{% endfor %}</div>
+                                  <div>Total Paid Visits!</div>
+
                                 </div>
                             </div>
                         </div>
@@ -209,26 +210,24 @@ table thead, table tbody tr {
                                         <th>Paid</th>
                                         <th>Unique</th>
                                         <th>Average</th>
-                                        <th>Studio</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for q in query %}
-                                      <tr class="odd gradeX">
-                                          <td>{{q.Teacher}}</td>
-                                          <td>{{q.TotalSessions}}</td>
-                                          <td>{{q.CompGuestVisits}}</td>
-                                          <td class="center">{{q.PaidVisits}}</td>
-                                          <td class="center">{{q.UniqueClients}}</td>
-                                          <td class="center">{{q.Average}}</td>
-                                          <td class="center">{{q.Studio}}</td>
-                                      </tr>
+                                    {% for q in teacherList if q['Studio'] == s %}
+                                        <tr class="odd gradeX">
+                                            <td>{{q['Teacher']}}</td>
+                                            <td>{{q['TotalSessions']}}</td>
+                                            <td>{{q['CompGuestVisits']}}</td>
+                                            <td class="center">{{q['PaidVisits']}}</td>
+                                            <td class="center">{{q['UniqueClients']}}</td>
+                                            <td class="center">{{q['Average']}}</td>
+                                        </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
                           </div>
                           <script>
-                          $('#dataTables-example-{{s}}').DataTable({
+                          $("#dataTables-example-{{s}}").DataTable({
                               responsive: true
                           });
 
@@ -556,6 +555,7 @@ table thead, table tbody tr {
         }
     });
 
+    // console.log('''{% for s in uniqueStudios  | sort() %}{% for q in query if q.Studio == s %}s{{q.Studio}}{% endfor %}{% endfor %}''');
 
     </script>
 
