@@ -7,7 +7,11 @@ from jinja2 import Template
 # from util import Util
 from bson.son import SON
 from pymongo import MongoClient, GEO2D
-
+from ClassService import ClassServiceCalls
+from suds.client import Client
+from bson import json_util
+import json
+from suds.client import Client
 
 app = Flask(__name__)
 #
@@ -40,33 +44,10 @@ def home():
     totalPaidVisits = db.data.aggregate(
         [{'$group': {'_id': None, 'total': {'$sum': '$PaidVisits'}}}]
     )
-
     teacherList = list(query)
-
 
     uniqueTeachers = db.data.find({}).distinct("Teacher")
     uniqueStudios = db.data.find({}).distinct("Studio")
-
-    # s = db.data.aggregate([
-    #     { '$sort': { 'Teacher': 1, 'TotalSessions': -1 } },
-    #     {
-    #         '$group': {
-    #             '_id': '$Teacher',
-    #             'docs': { '$push': '$$ROOT' },
-    #         }
-    #     },
-    #     {
-    #         '$project': {
-    #             'top_three': {
-    #                 '$slice': ['$docs', 3]
-    #             }
-    #         }
-    #     }
-    # ])
-    #
-    # for i in s:
-    #     print i['PaidVisits']
-
 
     #get the top 5 teachers in each studio
 
@@ -95,6 +76,14 @@ def do_admin_login():
     else:
         return 'username'
 
+@app.route('/get-classes', methods=['POST', 'GET'])
+def get_classes():
+    service = ClassServiceCalls()
+    response = service.GetClasses()
+
+    required_dict = Client.dict(response)
+    print required_dict
+    return ''
 
 @app.route("/logout")
 def logout():
