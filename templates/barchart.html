@@ -12,7 +12,7 @@
                 <ul class="dropdown-menu pull-right" role="menu">
                       {% for s in uniqueStudios | sort() %}
                         <li>
-                          <a href="#" id="top-instructor-chart-{{s}}">{{s}}</a>
+                          <a href="#" class="dropdown-instructor-chart" id="top-instructor-chart-{{s}}">{{s}}</a>
                           <!-- <button id="top-instructor-chart-{{s}}">{{s}}</button> -->
                         </li>
                       {% endfor %}
@@ -34,26 +34,6 @@
 </div>
 
 <script>
-
-    //toggle dropdown
-
-
-    $("#top-instructor-chart-{{studio}}").click(function(ev, value){
-      var dropdownSelect = this;
-      console.log(dropdownSelect);
-
-      $('.barchart-panel').each(function(index, value) {
-        var barchartPanel = this;
-        console.log(barchartPanel);
-        // $(barchartPanel).addClass('hidden');
-      });
-
-      // $("#barchart-{{studio}}").removeClass("hidden");
-      // $("#barchart-{{studio}}").addClass("show");
-
-      ev.preventDefault();
-      ev.stopPropagation();
-    });
 
     // Create the bar chart
     Highcharts.chart('instructor-bar-chart-{{studio}}', {
@@ -132,19 +112,19 @@
                         17.2
                     ],
                     [
-                        'v9.0',
+                        'Session 3',
                         8.11
                     ],
                     [
-                        'v10.0',
+                        'Session 4',
                         5.33
                     ],
                     [
-                        'v6.0',
+                        'Session 5',
                         1.06
                     ],
                     [
-                        'v7.0',
+                        'Session 6',
                         0.5
                     ]
                 ]
@@ -153,60 +133,28 @@
                 id: 'Rexx',
                 data: [
                     [
-                        'v40.0',
-                        5
+                        'Session 1',
+                        24.13
                     ],
                     [
-                        'v41.0',
-                        4.32
+                        'Session 2',
+                        17.2
                     ],
                     [
-                        'v42.0',
-                        3.68
+                        'Session 3',
+                        8.11
                     ],
                     [
-                        'v39.0',
-                        2.96
+                        'Session 4',
+                        5.33
                     ],
                     [
-                        'v36.0',
-                        2.53
+                        'Session 5',
+                        1.06
                     ],
                     [
-                        'v43.0',
-                        1.45
-                    ],
-                    [
-                        'v31.0',
-                        1.24
-                    ],
-                    [
-                        'v35.0',
-                        0.85
-                    ],
-                    [
-                        'v38.0',
-                        0.6
-                    ],
-                    [
-                        'v32.0',
-                        0.55
-                    ],
-                    [
-                        'v37.0',
-                        0.38
-                    ],
-                    [
-                        'v33.0',
-                        0.19
-                    ],
-                    [
-                        'v34.0',
-                        0.14
-                    ],
-                    [
-                        'v30.0',
-                        0.14
+                        'Session 6',
+                        0.5
                     ]
                 ]
             }, {
@@ -214,36 +162,28 @@
                 id: 'Julie',
                 data: [
                     [
-                        'v35',
-                        2.76
+                        'Session 1',
+                        24.13
                     ],
                     [
-                        'v36',
-                        2.32
+                        'Session 2',
+                        17.2
                     ],
                     [
-                        'v37',
-                        2.31
+                        'Session 3',
+                        8.11
                     ],
                     [
-                        'v34',
-                        1.27
+                        'Session 4',
+                        5.33
                     ],
                     [
-                        'v38',
-                        1.02
+                        'Session 5',
+                        1.06
                     ],
                     [
-                        'v31',
-                        0.33
-                    ],
-                    [
-                        'v33',
-                        0.22
-                    ],
-                    [
-                        'v32',
-                        0.15
+                        'Session 6',
+                        0.5
                     ]
                 ]
             }, {
@@ -251,32 +191,28 @@
                 id: 'Joe',
                 data: [
                     [
-                        'v8.0',
-                        2.56
+                        'Session 1',
+                        24.13
                     ],
                     [
-                        'v7.1',
-                        0.77
+                        'Session 2',
+                        17.2
                     ],
                     [
-                        'v5.1',
-                        0.42
+                        'Session 3',
+                        8.11
                     ],
                     [
-                        'v5.0',
-                        0.3
+                        'Session 4',
+                        5.33
                     ],
                     [
-                        'v6.1',
-                        0.29
+                        'Session 5',
+                        1.06
                     ],
                     [
-                        'v7.0',
-                        0.26
-                    ],
-                    [
-                        'v6.2',
-                        0.17
+                        'Session 6',
+                        0.5
                     ]
                 ]
             }, {
@@ -284,20 +220,28 @@
                 id: 'Frank',
                 data: [
                     [
-                        'v12.x',
-                        0.34
+                        'Session 1',
+                        24.13
                     ],
                     [
-                        'v28',
-                        0.24
+                        'Session 2',
+                        17.2
                     ],
                     [
-                        'v27',
-                        0.17
+                        'Session 3',
+                        8.11
                     ],
                     [
-                        'v29',
-                        0.16
+                        'Session 4',
+                        5.33
+                    ],
+                    [
+                        'Session 5',
+                        1.06
+                    ],
+                    [
+                        'Session 6',
+                        0.5
                     ]
                 ]
             }]

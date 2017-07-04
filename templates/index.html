@@ -200,6 +200,25 @@ table thead, table tbody tr {
     <script src="../static/morrisjs/morris.min.js"></script>
 
     <script>
+
+    //barchart toggling
+    $(".dropdown-instructor-chart").click(function(ev){
+      //hide all
+      $('.barchart-panel').each(function(index, value) {
+        var barChartPanel = this;
+        $(barChartPanel).addClass('hidden');
+      });
+      //unhide selected
+      var fullStudioPath = '#barchart-' + $(this).text();
+      $(fullStudioPath).removeClass("hidden");
+      console.log(fullStudioPath)
+      //disable # ahref
+      ev.preventDefault();
+      ev.stopPropagation();
+    });
+
+
+    //sor  t that shit
     $('.studio-tabs-table').each(function(index, value) {
       if (index == '0') {
         $(this).addClass( "active" );
