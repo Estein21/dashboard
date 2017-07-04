@@ -80,6 +80,7 @@ def do_admin_login():
 def get_classes():
     service = ClassServiceCalls()
     response = service.GetClasses()
+
     #======
     from suds.sudsobject import asdict
 
@@ -104,7 +105,8 @@ def get_classes():
         return json.dumps(recursive_asdict(data), default=json_util.default)
     #========
 
-    return suds_to_json(response)
+    dictResponse = suds_to_json(response)
+    return dictResponse
 
 @app.route("/logout")
 def logout():
