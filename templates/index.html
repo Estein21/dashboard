@@ -1,5 +1,4 @@
 {% include 'head.html' %}
-{% include 'foot.html' %}
 
 
 <style>
@@ -37,6 +36,12 @@ table thead, table tbody tr {
   top: 50%;
   left: 50%;
   z-index:99999;
+}
+.hidden {
+  display:none;
+}
+.show {
+  display:block!important;
 }
 
 </style>
@@ -78,6 +83,13 @@ table thead, table tbody tr {
                                 </div>
                             </div>
                         </div>
+                        <a href="#">
+                          <div class="panel-footer">
+                              <span class="pull-left">View Details</span>
+                              <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                              <div class="clearfix"></div>
+                          </div>
+                      </a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -93,6 +105,13 @@ table thead, table tbody tr {
                                 </div>
                             </div>
                         </div>
+                        <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                      </a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -108,6 +127,13 @@ table thead, table tbody tr {
                                 </div>
                             </div>
                         </div>
+                        <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                      </a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -124,48 +150,20 @@ table thead, table tbody tr {
                                 </div>
                             </div>
                         </div>
+                        <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                      </a>
                     </div>
                 </div>
             </div>
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-8">
-                    <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Top 5 Instructors at 14th St Studio
-                            <div class="pull-right" style="margin-top: -6px;">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-outline btn-default dropdown-toggle" data-toggle="dropdown">
-                                        Studio
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                          {% for s in uniqueStudios | sort() %}
-                                            <li>
-                                              <a href="#top-instructor-chart-{{s}}">{{s}}</a>
-                                            </li>
-                                          {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div id="instructor-bar-chart"></div>
-                                </div>
-                                <!-- /.col-lg-8 (nested) -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-
-                    <!-- /.panel -->
-
-                    <!-- /.panel -->
+                  {% include 'barchart.html' %}
                 </div>
                 <div class="col-md-4">
                   <div class="panel panel-default">
@@ -181,62 +179,7 @@ table thead, table tbody tr {
 
             <div class="row">
               <div class="col-md-12">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <i class="fa fa-clock-o fa-fw"></i> Instructor Performance by Studio
-                  </div>
-                  <div class="panel-body">
-
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs">
-                      {% for s in uniqueStudios | sort() %}
-                      <li class="studio-tabs-table"><a href="#{{s}}" data-toggle="tab">{{s}}</a></li>
-                      {% endfor %}
-                    </ul>
-
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-
-                      {% for s in uniqueStudios  | sort() %}
-                        <div class="tab-pane fade in" id="{{s}}">
-                            <h4 style="padding-bottom:1em"></h4>
-                            <!-- <div id="colvis"></div> -->
-                            <table width="100%" class="datatable-teacher table table-striped table-bordered table-hover" id="dataTables-example-{{s}}">
-                                <thead>
-                                    <tr>
-                                        <th>Teacher</th>
-                                        <th>Sessions</th>
-                                        <th>Comp'd</th>
-                                        <th>Paid</th>
-                                        <th>Unique</th>
-                                        <th>Average</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for q in teacherList if q['Studio'] == s %}
-                                        <tr class="odd gradeX">
-                                            <td>{{q['Teacher']}}</td>
-                                            <td>{{q['TotalSessions']}}</td>
-                                            <td>{{q['CompGuestVisits']}}</td>
-                                            <td class="center">{{q['PaidVisits']}}</td>
-                                            <td class="center">{{q['UniqueClients']}}</td>
-                                            <td class="center">{{q['Average']}}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                          </div>
-                          <script>
-                          $("#dataTables-example-{{s}}").DataTable({
-                              responsive: true
-                          });
-
-                          </script>
-                        {% endfor %}
-                    </div>
-                      <!-- /.table-responsive -->
-                  </div>
-                </div>
+                {% include 'datatable.html' %}
               </div>
             </div>
         </div>
@@ -256,11 +199,6 @@ table thead, table tbody tr {
     <script src="../static/raphael/raphael.min.js"></script>
     <script src="../static/morrisjs/morris.min.js"></script>
 
-    <!-- HighCharts -->
-    <script src="../static/js/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/data.js"></script>
-    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
-
     <script>
     $('.studio-tabs-table').each(function(index, value) {
       if (index == '0') {
@@ -270,6 +208,13 @@ table thead, table tbody tr {
     $('.tab-pane').each(function(index, value) {
       if (index == '0') {
         $(this).addClass( "active in");
+      }
+    });
+
+    //barchart js
+    $('.barchart-panel').each(function(index, value) {
+      if (index == '0') {
+        $(this).removeClass( "hidden");
       }
     });
 
@@ -305,255 +250,6 @@ table thead, table tbody tr {
 
     });
 
-
-    // Create the bar chart
-    Highcharts.chart('instructor-bar-chart', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Top 5 Instructors in May 2017'
-        },
-        subtitle: {
-            text: 'Click the columns to view classes.'
-        },
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
-            title: {
-                text: 'Number of Sessions'
-            }
-
-        },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.y}'
-                }
-            }
-        },
-
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> sessions<br/>'
-        },
-
-        series: [{
-            name: 'Instructors',
-            colorByPoint: true,
-            data: [{
-                name: 'Greg',
-                y: 96,
-                drilldown: 'Greg'
-            }, {
-                name: 'Rexx',
-                y: 83,
-                drilldown: 'Rexx'
-            }, {
-                name: 'Julie',
-                y: 64,
-                drilldown: 'Julie'
-            }, {
-                name: 'Joe',
-                y: 42,
-                drilldown: 'Joe'
-            }, {
-                name: 'Frank',
-                y: 12,
-                drilldown: 'Frank'
-            }]
-        }],
-        drilldown: {
-            series: [{
-                name: 'Greg',
-                id: 'Greg',
-                data: [
-                    [
-                        'Session 1',
-                        24.13
-                    ],
-                    [
-                        'Session 2',
-                        17.2
-                    ],
-                    [
-                        'v9.0',
-                        8.11
-                    ],
-                    [
-                        'v10.0',
-                        5.33
-                    ],
-                    [
-                        'v6.0',
-                        1.06
-                    ],
-                    [
-                        'v7.0',
-                        0.5
-                    ]
-                ]
-            }, {
-                name: 'Rexx',
-                id: 'Rexx',
-                data: [
-                    [
-                        'v40.0',
-                        5
-                    ],
-                    [
-                        'v41.0',
-                        4.32
-                    ],
-                    [
-                        'v42.0',
-                        3.68
-                    ],
-                    [
-                        'v39.0',
-                        2.96
-                    ],
-                    [
-                        'v36.0',
-                        2.53
-                    ],
-                    [
-                        'v43.0',
-                        1.45
-                    ],
-                    [
-                        'v31.0',
-                        1.24
-                    ],
-                    [
-                        'v35.0',
-                        0.85
-                    ],
-                    [
-                        'v38.0',
-                        0.6
-                    ],
-                    [
-                        'v32.0',
-                        0.55
-                    ],
-                    [
-                        'v37.0',
-                        0.38
-                    ],
-                    [
-                        'v33.0',
-                        0.19
-                    ],
-                    [
-                        'v34.0',
-                        0.14
-                    ],
-                    [
-                        'v30.0',
-                        0.14
-                    ]
-                ]
-            }, {
-                name: 'Julie',
-                id: 'Julie',
-                data: [
-                    [
-                        'v35',
-                        2.76
-                    ],
-                    [
-                        'v36',
-                        2.32
-                    ],
-                    [
-                        'v37',
-                        2.31
-                    ],
-                    [
-                        'v34',
-                        1.27
-                    ],
-                    [
-                        'v38',
-                        1.02
-                    ],
-                    [
-                        'v31',
-                        0.33
-                    ],
-                    [
-                        'v33',
-                        0.22
-                    ],
-                    [
-                        'v32',
-                        0.15
-                    ]
-                ]
-            }, {
-                name: 'Joe',
-                id: 'Joe',
-                data: [
-                    [
-                        'v8.0',
-                        2.56
-                    ],
-                    [
-                        'v7.1',
-                        0.77
-                    ],
-                    [
-                        'v5.1',
-                        0.42
-                    ],
-                    [
-                        'v5.0',
-                        0.3
-                    ],
-                    [
-                        'v6.1',
-                        0.29
-                    ],
-                    [
-                        'v7.0',
-                        0.26
-                    ],
-                    [
-                        'v6.2',
-                        0.17
-                    ]
-                ]
-            }, {
-                name: 'Frank',
-                id: 'Frank',
-                data: [
-                    [
-                        'v12.x',
-                        0.34
-                    ],
-                    [
-                        'v28',
-                        0.24
-                    ],
-                    [
-                        'v27',
-                        0.17
-                    ],
-                    [
-                        'v29',
-                        0.16
-                    ]
-                ]
-            }]
-        }
-    });
 
     // console.log('''{% for s in uniqueStudios  | sort() %}{% for q in query if q.Studio == s %}s{{q.Studio}}{% endfor %}{% endfor %}''');
 

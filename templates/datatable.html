@@ -1,0 +1,56 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <i class="fa fa-clock-o fa-fw"></i> Instructor Performance by Studio
+  </div>
+  <div class="panel-body">
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+      {% for s in uniqueStudios | sort() %}
+      <li class="studio-tabs-table"><a href="#{{s}}" data-toggle="tab">{{s}}</a></li>
+      {% endfor %}
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+      {% for s in uniqueStudios  | sort() %}
+        <div class="tab-pane fade in" id="{{s}}">
+            <h4 style="padding-bottom:1em"></h4>
+            <!-- <div id="colvis"></div> -->
+            <table width="100%" class="datatable-teacher table table-striped table-bordered table-hover" id="dataTables-example-{{s}}">
+                <thead>
+                    <tr>
+                        <th>Teacher</th>
+                        <th>Sessions</th>
+                        <th>Comp'd</th>
+                        <th>Paid</th>
+                        <th>Unique</th>
+                        <th>Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for q in teacherList if q['Studio'] == s %}
+                        <tr class="odd gradeX">
+                            <td>{{q['Teacher']}}</td>
+                            <td>{{q['TotalSessions']}}</td>
+                            <td>{{q['CompGuestVisits']}}</td>
+                            <td class="center">{{q['PaidVisits']}}</td>
+                            <td class="center">{{q['UniqueClients']}}</td>
+                            <td class="center">{{q['Average']}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+          </div>
+          <script>
+          $("#dataTables-example-{{s}}").DataTable({
+              responsive: true
+          });
+
+          </script>
+        {% endfor %}
+    </div>
+      <!-- /.table-responsive -->
+  </div>
+</div>
