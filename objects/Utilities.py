@@ -1,5 +1,5 @@
 from pymongo import MongoClient, GEO2D
- 
+
 class Utilities:
     def __init__(self):
         pass
