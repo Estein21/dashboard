@@ -4,21 +4,24 @@ from flask import Flask, render_template, request, jsonify, redirect, make_respo
 from werkzeug.utils import secure_filename
 from collections import Counter
 from jinja2 import Template
-# from util import Util
 from bson.son import SON
 from pymongo import MongoClient, GEO2D
-from ClassService import ClassServiceCalls
 from suds.client import Client
 from bson import json_util
 import json
-from suds.client import Client
+
+#objects made by me
+from objects.Utilities import Utilities
+from objects.ClassService import ClassServiceCalls
+
+
 
 app = Flask(__name__)
-#
-# u = Util()
-# db = u.dbConfig()
-app.secret_key = 'akshdjasdGHJsslkgajh'
-db = MongoClient('52.15.58.213', 27017).test
+
+util = Utilities()
+db = util.dbConfig()
+
+app.secret_key = util.secretKey
 
 
 @app.route('/')
@@ -82,27 +85,27 @@ def get_classes():
     response = service.GetClasses()
 
     #======
-    from suds.sudsobject import asdict
-
-    def recursive_asdict(d):
-        """Convert Suds object into serializable format."""
-        out = {}
-        for k, v in asdict(d).iteritems():
-            if hasattr(v, '__keylist__'):
-                out[k] = recursive_asdict(v)
-            elif isinstance(v, list):
-                out[k] = []
-                for item in v:
-                    if hasattr(item, '__keylist__'):
-                        out[k].append(recursive_asdict(item))
-                    else:
-                        out[k].append(item)
-            else:
-                out[k] = v
-        return out
-
-    def suds_to_json(data):
-        return json.dumps(recursive_asdict(data), default=json_util.default)
+    # from suds.sudsobject import asdict
+    #
+    # def recursive_asdict(d):
+    #     """Convert Suds object into serializable format."""
+    #     out = {}
+    #     for k, v in asdict(d).iteritems():
+    #         if hasattr(v, '__keylist__'):
+    #             out[k] = recursive_asdict(v)
+    #         elif isinstance(v, list):
+    #             out[k] = []
+    #             for item in v:
+    #                 if hasattr(item, '__keylist__'):
+    #                     out[k].append(recursive_asdict(item))
+    #                 else:
+    #                     out[k].append(item)
+    #         else:
+    #             out[k] = v
+    #     return out
+    #
+    # def suds_to_json(data):
+    #     return json.dumps(recursive_asdict(data), default=json_util.default)
     #========
 
     dictResponse = suds_to_json(response)
