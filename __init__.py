@@ -21,7 +21,7 @@ app = Flask(__name__)
 util = Utilities()
 db = util.dbConfig()
 
-app.secret_key = util.secretKey
+app.secret_key = 'akshdjasdGHJsslkgajh'
 
 
 @app.route('/')
