@@ -34,23 +34,27 @@ def dashboardRouting():
         return home()
 
 
-@app.route('/home')
+@app.route('/')
 def home():
-    query = db.data.find({})
+
+
+    studio = session['studio']
+
+    query = db.data.find({"profile":studio})
 
     # total sessions sum
     queryTwo = db.data.find()
     totalSessions = 0
     for q in queryTwo:
-        totalSessions += int(q['TotalSessions'])
+        totalSessions += int(q['values']['totalsessions'])
 
     totalPaidVisits = db.data.aggregate(
-        [{'$group': {'_id': None, 'total': {'$sum': '$PaidVisits'}}}]
+        [{'$group': {'_id': None, 'total': {'$sum': '$values.paidvisits'}}}]
     )
     teacherList = list(query)
 
-    uniqueTeachers = db.data.find({}).distinct("Teacher")
-    uniqueStudios = db.data.find({}).distinct("Studio")
+    uniqueTeachers = db.data.find({}).distinct("teacher")
+    uniqueStudios = db.data.find({}).distinct("studio")
 
     #get the top 5 teachers in each studio
 
@@ -58,9 +62,9 @@ def home():
     return render_template('index.html',
     query=query, teacherList=teacherList, totalSessions=totalSessions, uniqueStudios=uniqueStudios, totalPaidVisits=totalPaidVisits)
 
-@app.route('/mind-body', methods=['POST', 'GET'])
+@app.route('/mindbody', methods=['POST', 'GET'])
 def mind_body_page():
-    return render_template('mind-body.html')
+    return render_template()
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -83,8 +87,8 @@ def do_admin_login():
     else:
         return 'username'
 
-@app.route('/import-data/mindbody', methods=['POST', 'GET'])
-def import_data_mindbody():
+@app.route('/import-data/mindbody/get-classes', methods=['POST', 'GET'])
+def import_data_mindbody_classes():
     service = ClassServiceCalls()
     response = service.GetClasses()
 
@@ -102,6 +106,7 @@ def import_data_mindbody():
         d['instructor']['firstname'] = str(c.Staff.FirstName)
         d['instructor']['lastname'] = str(c.Staff.FirstName)
         classDict.append(d)
+
 
     print classDict
     return ''

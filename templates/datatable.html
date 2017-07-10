@@ -30,14 +30,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for q in teacherList if q['Studio'] == s %}
+                    {% for q in teacherList if q['studio'] == s %}
                         <tr class="odd gradeX">
-                            <td>{{q['Teacher']}}</td>
-                            <td>{{q['TotalSessions']}}</td>
-                            <td>{{q['CompGuestVisits']}}</td>
-                            <td class="center">{{q['PaidVisits']}}</td>
-                            <td class="center">{{q['UniqueClients']}}</td>
-                            <td class="center">{{q['Average']}}</td>
+                            <td>{{q['teacher']}}</td>
+                            <td>{{q['values']['totalsessions']}}</td>
+                            <td>{{q['values']['compguestvisits']}}</td>
+                            <td class="center">{{q['values']['paidvisits']}}</td>
+                            <td class="center">{{q['values']['uniqueclients']}}</td>
+                            <td class="center">{{q['average']}}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
