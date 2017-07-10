@@ -13,8 +13,8 @@ import json
 #objects made by me
 from objects.Utilities import Utilities
 from objects.ClassService import ClassServiceCalls
-
-
+from objects.SudsConverter import SudsConverter
+from objects.CSVImporter import CSVImporter
 
 app = Flask(__name__)
 
@@ -58,6 +58,10 @@ def home():
     return render_template('index.html',
     query=query, teacherList=teacherList, totalSessions=totalSessions, uniqueStudios=uniqueStudios, totalPaidVisits=totalPaidVisits)
 
+@app.route('/mind-body', methods=['POST', 'GET'])
+def mind_body_page():
+    return render_template('mind-body.html')
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def do_admin_login():
@@ -79,37 +83,45 @@ def do_admin_login():
     else:
         return 'username'
 
-@app.route('/get-classes', methods=['POST', 'GET'])
-def get_classes():
+@app.route('/import-data/mindbody', methods=['POST', 'GET'])
+def import_data_mindbody():
     service = ClassServiceCalls()
     response = service.GetClasses()
 
-    #======
-    # from suds.sudsobject import asdict
-    #
-    # def recursive_asdict(d):
-    #     """Convert Suds object into serializable format."""
-    #     out = {}
-    #     for k, v in asdict(d).iteritems():
-    #         if hasattr(v, '__keylist__'):
-    #             out[k] = recursive_asdict(v)
-    #         elif isinstance(v, list):
-    #             out[k] = []
-    #             for item in v:
-    #                 if hasattr(item, '__keylist__'):
-    #                     out[k].append(recursive_asdict(item))
-    #                 else:
-    #                     out[k].append(item)
-    #         else:
-    #             out[k] = v
-    #     return out
-    #
-    # def suds_to_json(data):
-    #     return json.dumps(recursive_asdict(data), default=json_util.default)
-    #========
+    classList = response.Classes.Class
 
-    dictResponse = suds_to_json(response)
-    return dictResponse
+    classDict = []
+    for c in classList:
+        d = {}
+        d['class'] = {}
+        d['class']['name'] = str(c.ClassDescription.Name)
+        d['class']['program'] = str(c.ClassDescription.Program.Name)
+        d['class']['studio'] = str(c.Location.City)
+
+        d['instructor'] = {}
+        d['instructor']['firstname'] = str(c.Staff.FirstName)
+        d['instructor']['lastname'] = str(c.Staff.FirstName)
+        classDict.append(d)
+
+    print classDict
+    return ''
+
+@app.route('/import-data/csv', methods=['POST', 'GET'])
+def import_data_csv():
+
+    #Import Header names from uploaded CSV per studio
+
+    #Name studio
+
+    #User selects Header names to import
+
+    #Run upload script
+
+    # CSVImporter = CSVImporter()
+
+
+    return ''
+
 
 @app.route("/logout")
 def logout():
