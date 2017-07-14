@@ -69,182 +69,75 @@
         },
 
         tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> sessions<br/>'
+            headerFormat: '<span style="font-size:11px">{series.teacher}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.teacher}</span>: <b>{point.y}</b> sessions<br/>'
         },
-
         series: [{
             name: 'Instructors',
             colorByPoint: true,
-            data: [{
-                name: 'Greg',
-                y: 96,
-                drilldown: 'Greg'
-            }, {
-                name: 'Rexx',
-                y: 83,
-                drilldown: 'Rexx'
-            }, {
-                name: 'Julie',
-                y: 64,
-                drilldown: 'Julie'
-            }, {
-                name: 'Joe',
-                y: 42,
-                drilldown: 'Joe'
-            }, {
-                name: 'Frank',
-                y: 12,
-                drilldown: 'Frank'
-            }]
+              data: [
+                  {% for top in topInstructors if top['studio'] == studio %}
+                    {
+                      name: '{{ top['teacher'] }}',
+                      y: {{ top['totalsessions'] }},
+                      drilldown: '{{ top['drilldown'] }}'
+                    }{% if not loop.last %},{% endif %}
+                  {% endfor %}
+                ]
         }],
         drilldown: {
-            series: [{
-                name: 'Greg',
-                id: 'Greg',
-                data: [
-                    [
-                        'Session 1',
-                        24.13
-                    ],
-                    [
-                        'Session 2',
-                        17.2
-                    ],
-                    [
-                        'Session 3',
-                        8.11
-                    ],
-                    [
-                        'Session 4',
-                        5.33
-                    ],
-                    [
-                        'Session 5',
-                        1.06
-                    ],
-                    [
-                        'Session 6',
-                        0.5
-                    ]
-                ]
-            }, {
-                name: 'Rexx',
-                id: 'Rexx',
-                data: [
-                    [
-                        'Session 1',
-                        24.13
-                    ],
-                    [
-                        'Session 2',
-                        17.2
-                    ],
-                    [
-                        'Session 3',
-                        8.11
-                    ],
-                    [
-                        'Session 4',
-                        5.33
-                    ],
-                    [
-                        'Session 5',
-                        1.06
-                    ],
-                    [
-                        'Session 6',
-                        0.5
-                    ]
-                ]
-            }, {
-                name: 'Julie',
-                id: 'Julie',
-                data: [
-                    [
-                        'Session 1',
-                        24.13
-                    ],
-                    [
-                        'Session 2',
-                        17.2
-                    ],
-                    [
-                        'Session 3',
-                        8.11
-                    ],
-                    [
-                        'Session 4',
-                        5.33
-                    ],
-                    [
-                        'Session 5',
-                        1.06
-                    ],
-                    [
-                        'Session 6',
-                        0.5
-                    ]
-                ]
-            }, {
-                name: 'Joe',
-                id: 'Joe',
-                data: [
-                    [
-                        'Session 1',
-                        24.13
-                    ],
-                    [
-                        'Session 2',
-                        17.2
-                    ],
-                    [
-                        'Session 3',
-                        8.11
-                    ],
-                    [
-                        'Session 4',
-                        5.33
-                    ],
-                    [
-                        'Session 5',
-                        1.06
-                    ],
-                    [
-                        'Session 6',
-                        0.5
-                    ]
-                ]
-            }, {
-                name: 'Frank',
-                id: 'Frank',
-                data: [
-                    [
-                        'Session 1',
-                        24.13
-                    ],
-                    [
-                        'Session 2',
-                        17.2
-                    ],
-                    [
-                        'Session 3',
-                        8.11
-                    ],
-                    [
-                        'Session 4',
-                        5.33
-                    ],
-                    [
-                        'Session 5',
-                        1.06
-                    ],
-                    [
-                        'Session 6',
-                        0.5
-                    ]
-                ]
-            }]
+          //for d in topFiveTeachersClassesPerStudio if d['studio'] == studio
+            series: [
+
+              {% for top in topInstructors if top['studio'] == studio %}
+                {
+                  name: '{{ top['teacher'] }}',
+                  id: '{{ top['teacher'] }}',
+                  studio: '{{ top['studio'] }}',
+                  data: [
+                    //for session in sessions if session['teacher'] == top['teacher'] and session['studio'] == top['studio']
+                    ['Flow', 12],
+                    //endfor
+                  ]
+
+                }{% if not loop.last %},{% endif %}
+              {% endfor %}
+
+
+
+            //   {
+            //     name: 'Greg',
+            //     id: 'Greg',
+            //     studio: 'Something',
+            //     data: [
+            //         [
+            //             'Session 1',
+            //             24.13
+            //         ],
+            //         [
+            //             'Session 2',
+            //             17.2
+            //         ],
+            //         [
+            //             'Session 3',
+            //             8.11
+            //         ],
+            //         [
+            //             'Session 4',
+            //             5.33
+            //         ],
+            //         [
+            //             'Session 5',
+            //             1.06
+            //         ],
+            //         [
+            //             'Session 6',
+            //             0.5
+            //         ]
+            //     ]
+            // }
+          ]
+            //endfor
         }
     });
 </script>

@@ -7,15 +7,16 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
       {% for s in uniqueStudios | sort() %}
-      <li class="studio-tabs-table"><a href="#{{s}}" data-toggle="tab">{{s}}</a></li>
+      <li class="studio-tabs-table"><a href="#{{s}}-table-tab" data-toggle="tab">{{s}}</a></li>
       {% endfor %}
+      <li class="studio-tabs-table"><a href="#all-table-tab" data-toggle="tab">All</a></li>
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content">
 
       {% for s in uniqueStudios  | sort() %}
-        <div class="tab-pane fade in" id="{{s}}">
+        <div class="tab-pane fade in" id="{{s}}-table-tab">
             <h4 style="padding-bottom:1em"></h4>
             <!-- <div id="colvis"></div> -->
             <table width="100%" class="datatable-teacher table table-striped table-bordered table-hover" id="dataTables-example-{{s}}">
@@ -50,6 +51,46 @@
 
           </script>
         {% endfor %}
+
+        <div class="tab-pane fade in" id="all-table-tab">
+            <h4 style="padding-bottom:1em"></h4>
+            <!-- <div id="colvis"></div> -->
+            <table width="100%" class="datatable-teacher table table-striped table-bordered table-hover" id="dataTables-example-all">
+                <thead>
+                    <tr>
+                        <th>Teacher</th>
+                        <th>Studio</th>
+                        <th>Sessions</th>
+                        <th>Comp'd</th>
+                        <th>Paid</th>
+                        <th>Unique</th>
+                        <th>Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for q in teacherList %}
+                        <tr class="odd gradeX">
+                            <td>{{q['teacher']}}</td>
+                            <td>{{q['studio']}}</td>                            
+                            <td>{{q['values']['totalsessions']}}</td>
+                            <td>{{q['values']['compguestvisits']}}</td>
+                            <td class="center">{{q['values']['paidvisits']}}</td>
+                            <td class="center">{{q['values']['uniqueclients']}}</td>
+                            <td class="center">{{q['average']}}</td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+          </div>
+
+          <script>
+          $("#dataTables-example-all").DataTable({
+              responsive: true
+          });
+
+          </script>
+
     </div>
       <!-- /.table-responsive -->
   </div>

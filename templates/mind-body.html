@@ -1,9 +1,5 @@
 {% include 'head.html' %}
 
-<div class="preload">
-    <img src="http://i.imgur.com/KUJoe.gif">
-</div>
-
 <body>
 
     <div id="wrapper">
@@ -11,9 +7,111 @@
         {% include 'sidebar.html' %}
 
         <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Import Mind Body Data</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            MindBody Credentials
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form id="import-data" action="/import-data/mindbody/get-classes" method="POST" role="form">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <input disabled class="form-control" placeholder="Username" name="username" type="text" autofocus="">
+                                            </div>
+                                            <div class="form-group">
+                                                <input disabled class="form-control" placeholder="Password" name="password" type="password" value="">
+                                            </div>
+                                            <p id="error"></p>
+                                            <p class="help-block" style="font-size:11px">We don't store your credentials, they are just for importing Class data into your Yogilytics dashboard</p>
+
+                                            <input type="submit" value="Import" class="btn btn-primary btn-large btn-block">
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Dummy Data from MindBody
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table id="data-placeholder"></table>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
         </div>
     </div>
 </body>
 
 
 </html>
+
+<script>
+$("form#import-data").submit(function(e) {
+    var form = this;
+    e.preventDefault();
+    var formData = $(form).serializeArray();
+    $.ajax({
+        url: "/import-data/mindbody/get-classes",
+        data: formData,
+        type: 'POST',
+        success: function(response) {
+            if (response == 'username') {
+                $('#error').text("Username & password combination invalid!")
+            } else if (response == 'password') {
+                $('#error').text("Username & password combination invalid!")
+            } else {
+                // $('#data-placeholder').text(response)
+
+                // convert string to JSON
+                response = $.parseJSON(response);
+
+                $(function() {
+                    $.each(response, function(i, item) {
+                        var $tr = $('<tr>').append(
+                          $('<td>').text(item.instructor.firstname),
+                          $('<td>').text(item.instructor.lastname),
+                          $('<td>').text(item.class.name),
+                          $('<td>').text(item.class.studio),
+                          $('<td>').text(item.class.program),
+                          $('<td>').text(item.class.type),
+                          $('<td>').text(item.class.city),
+                          $('<td>').text(item.values.totalbooked),                          
+                          $('<td>').text(item.values.maxcapacity)
+
+                        ).appendTo('#data-placeholder');
+                        console.log(item);
+                    });
+                });
+
+
+
+
+            }
+        }
+    });
+});
+</script>

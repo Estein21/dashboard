@@ -15,57 +15,17 @@ from objects.Utilities import Utilities
 from objects.ClassService import ClassServiceCalls
 from objects.SudsConverter import SudsConverter
 from objects.CSVImporter import CSVImporter
+from objects.Queries import Queries
+
 
 app = Flask(__name__)
 
 util = Utilities()
 db = util.dbConfig()
 
+queries = Queries()
+
 app.secret_key = 'akshdjasdGHJsslkgajh'
-
-
-@app.route('/')
-def dashboardRouting():
-    if not session.get('logged_in'):
-        session.clear()
-        return render_template('login.html')
-
-    elif session['logged_in'] == True:
-        return home()
-
-
-@app.route('/')
-def home():
-
-
-    studio = session['studio']
-
-    query = db.data.find({"profile":studio})
-
-    # total sessions sum
-    queryTwo = db.data.find()
-    totalSessions = 0
-    for q in queryTwo:
-        totalSessions += int(q['values']['totalsessions'])
-
-    totalPaidVisits = db.data.aggregate(
-        [{'$group': {'_id': None, 'total': {'$sum': '$values.paidvisits'}}}]
-    )
-    teacherList = list(query)
-
-    uniqueTeachers = db.data.find({}).distinct("teacher")
-    uniqueStudios = db.data.find({}).distinct("studio")
-
-    #get the top 5 teachers in each studio
-
-
-    return render_template('index.html',
-    query=query, teacherList=teacherList, totalSessions=totalSessions, uniqueStudios=uniqueStudios, totalPaidVisits=totalPaidVisits)
-
-@app.route('/mindbody', methods=['POST', 'GET'])
-def mind_body_page():
-    return render_template()
-
 
 @app.route('/login', methods=['POST', 'GET'])
 def do_admin_login():
@@ -87,45 +47,135 @@ def do_admin_login():
     else:
         return 'username'
 
+@app.route('/')
+def dashboardRouting():
+    if not session.get('logged_in'):
+        session.clear()
+        return render_template('login.html')
+
+    elif session['logged_in'] == True:
+        return home()
+
+@app.route('/')
+def home():
+    if not session.get('logged_in'):
+        session.clear()
+        return render_template('login.html')
+
+    elif session['logged_in'] == True:
+
+        #assign studio variable from session
+        studio = session['studio']
+
+        #base query
+        query = db.data.find({"profile":studio})
+
+        # total sessions sum
+        totalSessions = queries.totalSessions()
+
+        #total paid visits
+        totalPaidVisits = queries.totalPaidVisits()
+
+        #total list of teachers
+        teacherList = list(query)
+
+
+        # topInstructors = queries.topInstructors()
+        topInstructors = list(queries.topInstructors())
+
+        #totalSessionsPerStudio
+        totalSessionsPerStudio = list(queries.totalSessionsPerStudio())
+
+        #topTeacher
+        topTeacher = queries.topTeacher()
+
+        # #Top Studio
+        # t = list(queries.totalSessionsPerStudio())
+        # print t
+
+
+        uniqueTeachers = db.data.find({}).distinct("teacher")
+        uniqueStudios = db.data.find({}).distinct("studio")
+
+
+        return render_template('index.html',
+        query=query, teacherList=teacherList, totalSessions=totalSessions, uniqueStudios=uniqueStudios, totalPaidVisits=totalPaidVisits,
+        topInstructors=topInstructors, totalSessionsPerStudio=totalSessionsPerStudio, topTeacher=topTeacher)
+
+@app.route('/mind-body', methods=['POST', 'GET'])
+def mind_body_page():
+    if not session.get('logged_in'):
+        session.clear()
+        return render_template('login.html')
+
+    elif session['logged_in'] == True:
+        return render_template('mind-body.html')
+
+
 @app.route('/import-data/mindbody/get-classes', methods=['POST', 'GET'])
 def import_data_mindbody_classes():
-    service = ClassServiceCalls()
-    response = service.GetClasses()
 
-    classList = response.Classes.Class
+    if not session.get('logged_in'):
+        session.clear()
+        return render_template('login.html')
 
-    classDict = []
-    for c in classList:
-        d = {}
-        d['class'] = {}
-        d['class']['name'] = str(c.ClassDescription.Name)
-        d['class']['program'] = str(c.ClassDescription.Program.Name)
-        d['class']['studio'] = str(c.Location.City)
+    elif session['logged_in'] == True:
 
-        d['instructor'] = {}
-        d['instructor']['firstname'] = str(c.Staff.FirstName)
-        d['instructor']['lastname'] = str(c.Staff.FirstName)
-        classDict.append(d)
+        #get form data
 
+        service = ClassServiceCalls()
+        response = service.GetClasses()
 
-    print classDict
-    return ''
+        classList = response.Classes.Class
+
+        print classList[4]
+
+        classDict = []
+        for c in classList:
+            d = {}
+            d['class'] = {}
+            d['class']['name'] = str(c.ClassDescription.Name)
+            d['class']['studio'] = str(c.Location.Name)
+            d['class']['city'] = str(c.Location.City)
+            d['class']['program'] = str(c.ClassDescription.Program.Name)
+            d['class']['type'] = str(c.ClassDescription.SessionType.Name)
+
+            d['instructor'] = {}
+            d['instructor']['firstname'] = str(c.Staff.FirstName)
+            d['instructor']['lastname'] = str(c.Staff.FirstName)
+            d['instructor']['status'] = str(c.Staff.IndependentContractor)
+
+            d['values'] = {}
+            d['values']['totalbooked'] = str(c.TotalBooked)
+            d['values']['maxcapacity'] = str(c.MaxCapacity)
+
+            classDict.append(d)
+            #import to db
+
+        classDict = json.dumps(classDict, ensure_ascii=False)
+
+        return classDict
 
 @app.route('/import-data/csv', methods=['POST', 'GET'])
 def import_data_csv():
+    if not session.get('logged_in'):
+        session.clear()
+        return render_template('login.html')
 
-    #Import Header names from uploaded CSV per studio
+    elif session['logged_in'] == True:
 
-    #Name studio
+        #Import Header names from uploaded CSV per studio
 
-    #User selects Header names to import
+        #Name studio
 
-    #Run upload script
+        #User selects Header names to import
 
-    # CSVImporter = CSVImporter()
+        #Run upload script
+
+        # CSVImporter = CSVImporter()
 
 
-    return ''
+        return ''
 
 
 @app.route("/logout")

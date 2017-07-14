@@ -29,14 +29,6 @@ table thead, table tbody tr {
     table-layout: fixed;
 }
 
-.preload {
-  width:100px;
-  height: 100px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index:99999;
-}
 .hidden {
   display:none;
 }
@@ -46,9 +38,7 @@ table thead, table tbody tr {
 
 </style>
 
-<div class="preload">
-  <img src="../static/img/loader.gif">
-</div>
+
 
 <body>
 
@@ -100,7 +90,7 @@ table thead, table tbody tr {
                                     <i class="fa fa-book fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">Andrea</div>
+                                    <div class="huge">{{topTeacher['teacher']}}</div>
                                     <div>Top Teacher!</div>
                                 </div>
                             </div>
@@ -122,7 +112,7 @@ table thead, table tbody tr {
                                     <i class="fa fa-building-o fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">H St</div>
+                                    <div class="huge">14th</div>
                                     <div>Top Studio!</div>
                                 </div>
                             </div>
@@ -211,7 +201,7 @@ table thead, table tbody tr {
       //unhide selected
       var fullStudioPath = '#barchart-' + $(this).text();
       $(fullStudioPath).removeClass("hidden");
-      console.log(fullStudioPath)
+      // console.log(fullStudioPath)
       //disable # ahref
       ev.preventDefault();
       ev.stopPropagation();
@@ -242,29 +232,15 @@ table thead, table tbody tr {
 
         Morris.Donut({
             element: 'morris-donut-chart',
-            data: [{
-                label: "Bloomingdale",
-                value: 42
-            },
+            data: [
+            {% for sessions in totalSessionsPerStudio %}
             {
-                label: "Eye",
-                value: 223
-            },
-            {
-                label: "Coheights",
-                value: 123
-            },
-            {
-                label: "Dupont",
-                value: 270
-            },
-            {
-                label: "Glover",
-                value: 125
-            },  {
-                label: "H",
-                value: 52
-            }],
+              label:"{{ sessions['_id'] }}",
+              value:{{ sessions['totalSessions'] }}
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+
+          ],
             resize: true
         });
 
