@@ -1,5 +1,13 @@
 {% include 'head.html' %}
 
+<style>
+#loadingmessage{
+  width: 3em;
+  margin-left: 45%;
+  padding-bottom: 1em;
+}
+</style>
+
 <body>
 
     <div id="wrapper">
@@ -25,14 +33,19 @@
                                     <form id="import-data" action="/import-data/mindbody/get-classes" method="POST" role="form">
                                         <fieldset>
                                             <div class="form-group">
-                                                <input disabled class="form-control" placeholder="Username" name="username" type="text" autofocus="">
+                                                <input class="form-control" placeholder="Username" name="username" type="text" autofocus="">
                                             </div>
                                             <div class="form-group">
-                                                <input disabled class="form-control" placeholder="Password" name="password" type="password" value="">
+                                                <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <input class="form-control" placeholder="Site ID" name="siteid" type="text" value="">
                                             </div>
                                             <p id="error"></p>
                                             <p class="help-block" style="font-size:11px">We don't store your credentials, they are just for importing Class data into your Yogilytics dashboard</p>
-
+                                            <div id='loadingmessage' style='display:none'>
+                                              <img src='../static/img/loader.gif'/>
+                                            </div>
                                             <input type="submit" value="Import" class="btn btn-primary btn-large btn-block">
                                         </fieldset>
                                     </form>
@@ -73,6 +86,7 @@
 $("form#import-data").submit(function(e) {
     var form = this;
     e.preventDefault();
+    $('#loadingmessage').show();  // show the loading message.
     var formData = $(form).serializeArray();
     $.ajax({
         url: "/import-data/mindbody/get-classes",
@@ -85,6 +99,7 @@ $("form#import-data").submit(function(e) {
                 $('#error').text("Username & password combination invalid!")
             } else {
                 // $('#data-placeholder').text(response)
+                $('#loadingmessage').hide();
 
                 // convert string to JSON
                 response = $.parseJSON(response);
@@ -99,18 +114,17 @@ $("form#import-data").submit(function(e) {
                           $('<td>').text(item.class.program),
                           $('<td>').text(item.class.type),
                           $('<td>').text(item.class.city),
-                          $('<td>').text(item.values.totalbooked),                          
+                          $('<td>').text(item.values.totalbooked),
                           $('<td>').text(item.values.maxcapacity)
-
                         ).appendTo('#data-placeholder');
                         console.log(item);
                     });
                 });
-
-
-
-
             }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          $('#loadingmessage').hide();
+          alert("Error: " + errorThrown);
         }
     });
 });

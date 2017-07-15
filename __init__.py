@@ -9,6 +9,7 @@ from pymongo import MongoClient, GEO2D
 from suds.client import Client
 from bson import json_util
 import json
+from datetime import datetime
 
 #objects made by me
 from objects.Utilities import Utilities
@@ -16,7 +17,8 @@ from objects.ClassService import ClassServiceCalls
 from objects.SudsConverter import SudsConverter
 from objects.CSVImporter import CSVImporter
 from objects.Queries import Queries
-
+# from objects.BasicRequestHelper import FormData
+from objects.ClientService import ClientServiceCalls
 
 app = Flask(__name__)
 
@@ -68,34 +70,38 @@ def home():
         studio = session['studio']
 
         #base query
-        query = db.data.find({"profile":studio})
+        query = queries.baseQuery(studio)
 
         # total sessions sum
-        totalSessions = queries.totalSessions()
+        totalSessions = queries.totalSessions(studio)
 
         #total paid visits
-        totalPaidVisits = queries.totalPaidVisits()
+        totalPaidVisits = queries.totalPaidVisits(studio)
 
         #total list of teachers
         teacherList = list(query)
 
-
         # topInstructors = queries.topInstructors()
-        topInstructors = list(queries.topInstructors())
+        topInstructors = list(queries.topInstructors(studio))
 
         #totalSessionsPerStudio
-        totalSessionsPerStudio = list(queries.totalSessionsPerStudio())
+        totalSessionsPerStudio = list(queries.totalSessionsPerStudio(studio))
 
         #topTeacher
-        topTeacher = queries.topTeacher()
+        topTeacher = queries.topTeacher(studio)
+
+        #topStudio
+        # topStudio = queries.topStudio(studio)
+        # for t in topStudio:
+        #     print t
 
         # #Top Studio
         # t = list(queries.totalSessionsPerStudio())
         # print t
 
 
+        uniqueStudios = queries.uniqueStudios(studio)
         uniqueTeachers = db.data.find({}).distinct("teacher")
-        uniqueStudios = db.data.find({}).distinct("studio")
 
 
         return render_template('index.html',
@@ -122,39 +128,57 @@ def import_data_mindbody_classes():
     elif session['logged_in'] == True:
 
         #get form data
+        try:
+            form_username = str(request.form['username'])
+            form_password = str(request.form['password'])
+            form_siteid= str(request.form['siteid'])
 
-        service = ClassServiceCalls()
-        response = service.GetClasses()
+            # formdata = FormData()
+            # formdata.mindBodyForm(form_username)
 
-        classList = response.Classes.Class
 
-        print classList[4]
+            #
+            # clientService = ClientServiceCalls()
+            # clientresponse = clientService.GetClientServices()
+            # listing = clineresponse.Clients.Client
+            # for t in listing:
+            #     print t
 
-        classDict = []
-        for c in classList:
-            d = {}
-            d['class'] = {}
-            d['class']['name'] = str(c.ClassDescription.Name)
-            d['class']['studio'] = str(c.Location.Name)
-            d['class']['city'] = str(c.Location.City)
-            d['class']['program'] = str(c.ClassDescription.Program.Name)
-            d['class']['type'] = str(c.ClassDescription.SessionType.Name)
 
-            d['instructor'] = {}
-            d['instructor']['firstname'] = str(c.Staff.FirstName)
-            d['instructor']['lastname'] = str(c.Staff.FirstName)
-            d['instructor']['status'] = str(c.Staff.IndependentContractor)
+            service = ClassServiceCalls()
+            response = service.GetClasses()
+            classList = response.Classes.Class
 
-            d['values'] = {}
-            d['values']['totalbooked'] = str(c.TotalBooked)
-            d['values']['maxcapacity'] = str(c.MaxCapacity)
+            classDict = []
+            for c in classList:
+                d = {}
+                d['class'] = {}
+                d['class']['name'] = str(c.ClassDescription.Name)
+                d['class']['studio'] = str(c.Location.Name)
+                d['class']['city'] = str(c.Location.City)
+                d['class']['program'] = str(c.ClassDescription.Program.Name)
+                d['class']['type'] = str(c.ClassDescription.SessionType.Name)
 
-            classDict.append(d)
-            #import to db
+                d['instructor'] = {}
+                d['instructor']['firstname'] = str(c.Staff.FirstName)
+                d['instructor']['lastname'] = str(c.Staff.FirstName)
+                d['instructor']['status'] = str(c.Staff.IndependentContractor)
 
-        classDict = json.dumps(classDict, ensure_ascii=False)
+                d['values'] = {}
+                d['values']['totalbooked'] = str(c.TotalBooked)
+                d['values']['maxcapacity'] = str(c.MaxCapacity)
 
-        return classDict
+                #get this month
+
+                classDict.append(d)
+                #import to db
+
+            classDict = json.dumps(classDict, ensure_ascii=False)
+
+            return classDict
+
+        except Exception as e:
+            return e
 
 @app.route('/import-data/csv', methods=['POST', 'GET'])
 def import_data_csv():

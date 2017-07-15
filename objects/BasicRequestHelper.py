@@ -2,6 +2,16 @@
    Much of the abstracted logic such as filling out credential objects and arrays
    resides in this class."""
 
+
+#
+#
+# class FormData:
+#     def mindBodyForm(self,username):
+#         self.username = username
+#
+#     def username(self):
+#         return self.username
+
 SOURCE_NAME = "Yogilyticscom"
 SOURCE_PASSWORD = "NfFk0zsORLxpSenkNZZSxCQwnrE="
 

@@ -9,10 +9,11 @@ class Queries:
     def __init__(self):
         pass
 
-    def topInstructors(self):
+    def topInstructors(self,studio):
 
         #get the top 5 teachers in each studio
         topFiveTeachersPerStudio = db.data.aggregate([
+            {'$match' : {'profile': studio}},
             {'$sort': { 'values.totalsessions': -1} },
             {
                 '$group': {
@@ -43,16 +44,17 @@ class Queries:
 
         return topInstructors
 
-    def totalSessions(self):
-        query = db.data.find()
+    def totalSessions(self, studio):
+        query = db.data.find({"profile":studio})
         totalSessions = 0
         for q in query:
             totalSessions += int(q['values']['totalsessions'])
         return totalSessions
 
-    def totalSessionsPerStudio(self):
+    def totalSessionsPerStudio(self,studio):
         #get the top 5 teachers in each studio
         totalSessionsPerStudio = db.data.aggregate([
+            {'$match' : {'profile': studio}},
             {
                 '$group': {
                     '_id' :  '$studio',
@@ -64,12 +66,38 @@ class Queries:
 
 
 
-    def totalPaidVisits(self):
-        totalPaidVisits = db.data.aggregate(
-            [{'$group': {'_id': None, 'total': {'$sum': '$values.paidvisits'}}}]
-        )
+    def totalPaidVisits(self, studio):
+        totalPaidVisits = db.data.aggregate([
+            {'$match' : {'profile': studio}},
+            {'$group': {'_id': None, 'total': {'$sum': '$values.paidvisits'}}}
+        ])
         return totalPaidVisits
 
-    def topTeacher(self):
-        topTeacher = db.data.find_one({'$query':{},'$orderby':{'values.totalsessions':-1}})
+    def topTeacher(self,studio):
+        topTeacher = db.data.find_one(
+            # {"profile":studio},
+            # {'profile': studio},
+            {'$query':{},'$orderby':{'values.totalsessions':-1}}
+
+        )
         return topTeacher
+
+    def topStudio(self,studio):
+        topStudio = db.data.aggregate([
+            {'$match' : {'profile': studio}},
+            {
+                '$group': {
+                    '_id' :  '$studio',
+                    'totalSessions': { '$sum': "$values.totalsessions"  }
+                }
+            }
+        ])
+        return topStudio
+
+    def baseQuery(self, studio):
+        baseQuery = db.data.find({"profile":studio})
+        return baseQuery
+
+    def uniqueStudios(self, studio):
+        uniqueStudios = db.data.find({"profile":studio}).distinct("studio")
+        return uniqueStudios
