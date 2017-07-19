@@ -13,12 +13,9 @@ from datetime import datetime
 
 #objects made by me
 from objects.Utilities import Utilities
-from objects.ClassService import ClassServiceCalls
 from objects.SudsConverter import SudsConverter
 from objects.CSVImporter import CSVImporter
 from objects.Queries import Queries
-# from objects.BasicRequestHelper import FormData
-from objects.ClientService import ClientServiceCalls
 
 app = Flask(__name__)
 
@@ -117,6 +114,24 @@ def mind_body_page():
     elif session['logged_in'] == True:
         return render_template('mind-body.html')
 
+@app.route('/mindbody/update-credentials', methods=['POST', 'GET'])
+def mindbody_update_credentials():
+    if not session.get('logged_in'):
+        session.clear()
+        return render_template('login.html')
+
+    elif session['logged_in'] == True:
+        form_username = str(request.form['username'])
+        form_password = str(request.form['password'])
+        form_siteid= str(request.form['siteid'])
+
+        encrypted_pw = util.encode_password(form_password)
+        decrypted_pw = util.decode_password(encrypted_pw)
+
+        print encrypted_pw, decrypted_pw
+
+        return render_template('mind-body.html')
+
 
 @app.route('/import-data/mindbody/get-classes', methods=['POST', 'GET'])
 def import_data_mindbody_classes():
@@ -127,58 +142,53 @@ def import_data_mindbody_classes():
 
     elif session['logged_in'] == True:
 
-        #get form data
-        try:
-            form_username = str(request.form['username'])
-            form_password = str(request.form['password'])
-            form_siteid= str(request.form['siteid'])
+    #get form data
+        from objects.ClassService import ClassServiceCalls
+        from objects.BasicRequestHelper import mindBodyForm
 
-            # formdata = FormData()
-            # formdata.mindBodyForm(form_username)
+        form_username = str(request.form['username'])
+        form_password = str(request.form['password'])
+        form_siteid= str(request.form['siteid'])
 
+        encrypted_pw = util.encode_password(form_password)
+        #decrypted_pw = util.decode_password(encrypted_pw)
 
-            #
-            # clientService = ClientServiceCalls()
-            # clientresponse = clientService.GetClientServices()
-            # listing = clineresponse.Clients.Client
-            # for t in listing:
-            #     print t
+        mindBodyForm(form_username,encrypted_pw,form_siteid)
 
+        service = ClassServiceCalls()
+        response = service.GetClasses()
+        classList = response.Classes.Class
 
-            service = ClassServiceCalls()
-            response = service.GetClasses()
-            classList = response.Classes.Class
+        classDict = []
+        for c in classList:
+            d = {}
+            d['class'] = {}
+            d['class']['name'] = str(c.ClassDescription.Name)
+            d['class']['studio'] = str(c.Location.Name)
+            d['class']['city'] = str(c.Location.City)
+            d['class']['program'] = str(c.ClassDescription.Program.Name)
+            d['class']['type'] = str(c.ClassDescription.SessionType.Name)
 
-            classDict = []
-            for c in classList:
-                d = {}
-                d['class'] = {}
-                d['class']['name'] = str(c.ClassDescription.Name)
-                d['class']['studio'] = str(c.Location.Name)
-                d['class']['city'] = str(c.Location.City)
-                d['class']['program'] = str(c.ClassDescription.Program.Name)
-                d['class']['type'] = str(c.ClassDescription.SessionType.Name)
+            d['instructor'] = {}
+            d['instructor']['firstname'] = str(c.Staff.FirstName)
+            d['instructor']['lastname'] = str(c.Staff.FirstName)
+            d['instructor']['status'] = str(c.Staff.IndependentContractor)
 
-                d['instructor'] = {}
-                d['instructor']['firstname'] = str(c.Staff.FirstName)
-                d['instructor']['lastname'] = str(c.Staff.FirstName)
-                d['instructor']['status'] = str(c.Staff.IndependentContractor)
+            d['values'] = {}
+            d['values']['totalbooked'] = str(c.TotalBooked)
+            d['values']['maxcapacity'] = str(c.MaxCapacity)
 
-                d['values'] = {}
-                d['values']['totalbooked'] = str(c.TotalBooked)
-                d['values']['maxcapacity'] = str(c.MaxCapacity)
+            #get this month
 
-                #get this month
+            classDict.append(d)
+            #import to db
 
-                classDict.append(d)
-                #import to db
+        classDict = json.dumps(classDict, ensure_ascii=False)
 
-            classDict = json.dumps(classDict, ensure_ascii=False)
-
-            return classDict
-
-        except Exception as e:
-            return e
+        return classDict
+        #
+        # except Exception as e:
+        #     return e
 
 @app.route('/import-data/csv', methods=['POST', 'GET'])
 def import_data_csv():
