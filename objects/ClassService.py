@@ -1,6 +1,12 @@
 from suds.client import Client
 import BasicRequestHelper
 from datetime import datetime
+from objects.Utilities import Utilities
+
+util = Utilities()
+
+SOURCE_NAME = util.sourceNameMindBody()
+SOURCE_PASSWORD = util.sourcePasswordMindBody()
 
 
 class ClassServiceCalls:
@@ -62,7 +68,7 @@ class ClassServiceCalls:
 
     """GetClasses Methods"""
 
-    def GetClasses(self, classDescIds=None,
+    def GetClasses(self, userName, userPass, siteIDs,classDescIds=None,
                    classIds=None,
                    staffIds=None,
                    startDateTime=datetime.today(),
@@ -74,7 +80,7 @@ class ClassServiceCalls:
                    semesterIds=None,
                    hideCanceledClasses=False,
                    schedulingWindow=False):
-        result = ClassServiceMethods().GetClasses(classDescIds,
+        result = ClassServiceMethods().GetClasses(userName, userPass, siteIDs,classDescIds,
                                                   classIds,
                                                   staffIds,
                                                   startDateTime,
@@ -297,7 +303,8 @@ class ClassServiceMethods:
 
     """GetClasses methods"""
 
-    def GetClasses(self, classDescIds,
+    def GetClasses(self, USER_NAME, USER_PASSWORD, siteIDs,
+                   classDescIds,
                    classIds,
                    staffIds,
                    startDateTime,
@@ -309,7 +316,28 @@ class ClassServiceMethods:
                    semesterIds,
                    hideCanceledClasses,
                    schedulingWindow):
-        request = self.CreateBasicRequest("GetClasses")
+        # request = self.CreateBasicRequest("GetClasses")
+        request = self.service.factory.create("GetClasses")
+        if hasattr(request, 'Request'):
+            request = request.Request
+
+        ###
+        sourceCreds = self.service.factory.create('SourceCredentials')
+        sourceCreds.SourceName = SOURCE_NAME
+        sourceCreds.Password = SOURCE_PASSWORD
+        sourceCreds.SiteIDs.int = siteIDs
+
+        userCreds = self.service.factory.create('UserCredentials')
+        userCreds.Username = USER_NAME
+        userCreds.Password = USER_PASSWORD
+        userCreds.SiteIDs.int = siteIDs
+
+        request.SourceCredentials = sourceCreds
+        request.UserCredentials = userCreds
+        request.XMLDetail = "Full"
+        request.PageSize = 25
+        request.CurrentPageIndex = 0
+        ###
 
         request.ClassDescriptionIDs = BasicRequestHelper.FillArrayType(
             self.service, classDescIds, "Int")

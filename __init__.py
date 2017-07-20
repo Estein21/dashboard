@@ -144,19 +144,23 @@ def import_data_mindbody_classes():
 
     #get form data
         from objects.ClassService import ClassServiceCalls
-        from objects.BasicRequestHelper import mindBodyForm
 
-        form_username = str(request.form['username'])
-        form_password = str(request.form['password'])
+        USER_NAME = str(request.form['username'])
+        USER_PASSWORD = str(request.form['password'])
         form_siteid= str(request.form['siteid'])
 
-        encrypted_pw = util.encode_password(form_password)
+        # encrypted_pw = util.encode_password(form_password)
         #decrypted_pw = util.decode_password(encrypted_pw)
 
-        mindBodyForm(form_username,encrypted_pw,form_siteid)
+
+        # USER_NAME = "Siteowner"
+        # USER_PASSWORD = "apitest1234"
+
+        SITE_IDS = [-99]
+
 
         service = ClassServiceCalls()
-        response = service.GetClasses()
+        response = service.GetClasses(USER_NAME,USER_PASSWORD,SITE_IDS)
         classList = response.Classes.Class
 
         classDict = []
