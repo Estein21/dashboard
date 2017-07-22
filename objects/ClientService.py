@@ -211,7 +211,7 @@ class ClientServiceCalls:
                                                         startDate,
                                                         endDate,
                                                         unpaidsOnly)
-        print str(result)
+        return result
 
     """GetContactLogTypes Methods"""
 

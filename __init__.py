@@ -16,6 +16,8 @@ from objects.Utilities import Utilities
 from objects.SudsConverter import SudsConverter
 from objects.CSVImporter import CSVImporter
 from objects.Queries import Queries
+from objects.DictionaryBuilder import DictionaryBuilder
+
 
 app = Flask(__name__)
 
@@ -143,54 +145,22 @@ def import_data_mindbody_classes():
     elif session['logged_in'] == True:
 
     #get form data
-        from objects.ClassService import ClassServiceCalls
 
         USER_NAME = str(request.form['username'])
         USER_PASSWORD = str(request.form['password'])
-        form_siteid= str(request.form['siteid'])
-
-        # encrypted_pw = util.encode_password(form_password)
-        #decrypted_pw = util.decode_password(encrypted_pw)
-
+        # SITE_IDS= str(request.form['siteid'])
 
         # USER_NAME = "Siteowner"
         # USER_PASSWORD = "apitest1234"
-
         SITE_IDS = [-99]
 
+        dictionaryBuilder = DictionaryBuilder(USER_NAME, USER_PASSWORD, SITE_IDS)
+        fullDict = dictionaryBuilder.buildClientDict()
 
-        service = ClassServiceCalls()
-        response = service.GetClasses(USER_NAME,USER_PASSWORD,SITE_IDS)
-        classList = response.Classes.Class
+        print fullDict[1]
 
-        classDict = []
-        for c in classList:
-            d = {}
-            d['class'] = {}
-            d['class']['name'] = str(c.ClassDescription.Name)
-            d['class']['studio'] = str(c.Location.Name)
-            d['class']['city'] = str(c.Location.City)
-            d['class']['program'] = str(c.ClassDescription.Program.Name)
-            d['class']['type'] = str(c.ClassDescription.SessionType.Name)
+        return fullDict
 
-            d['instructor'] = {}
-            d['instructor']['firstname'] = str(c.Staff.FirstName)
-            d['instructor']['lastname'] = str(c.Staff.FirstName)
-            d['instructor']['status'] = str(c.Staff.IndependentContractor)
-
-            d['values'] = {}
-            d['values']['totalbooked'] = str(c.TotalBooked)
-            d['values']['maxcapacity'] = str(c.MaxCapacity)
-
-            #get this month
-
-            classDict.append(d)
-            #import to db
-
-        classDict = json.dumps(classDict, ensure_ascii=False)
-
-        return classDict
-        #
         # except Exception as e:
         #     return e
 
