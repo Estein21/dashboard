@@ -71,7 +71,7 @@ class DictionaryBuilder:
                     q['class_location'] = str(v.Location.Name)
                     q['class_instructor_id'] = str(v.Staff.ID)
                     q['class_instructor_name'] = str(v.Staff.Name)
-
+                    print str(v.Name) + ' appended!'
                     clientVisitsDict.append(q)
 
         return 'clientVisitsDict'
