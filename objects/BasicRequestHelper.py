@@ -6,11 +6,11 @@
 def mindBodyForm(username, password, siteid):
     print username
 
-SOURCE_NAME = "Yogilyticscom"
-SOURCE_PASSWORD = "NfFk0zsORLxpSenkNZZSxCQwnrE="
+SOURCE_NAME = "SOURCE_NAME"
+SOURCE_PASSWORD = "SOURCE_PASSWORD"
 
-USER_NAME = "Siteowner"
-USER_PASSWORD = "apitest1234"
+USER_NAME = "USER_NAME"
+USER_PASSWORD = "USER_PASSWORD"
 
 SITE_IDS = [-99]
 
