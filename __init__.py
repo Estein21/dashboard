@@ -26,7 +26,7 @@ db = util.dbConfig()
 
 queries = Queries()
 
-app.secret_key = 'akshdjasdGHJsslkgajh'
+app.secret_key = 'SECRET_KEY'
 
 @app.route('/login', methods=['POST', 'GET'])
 def do_admin_login():
